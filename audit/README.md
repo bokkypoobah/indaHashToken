@@ -2,6 +2,9 @@
 
 ## Summary
 
+Commits
+[f787eba](https://github.com/indahash/indaHashToken/commit/f787eba86b9f6d0f51aa4d9601e55a3010cfd5a6).
+
 <br />
 
 <hr />

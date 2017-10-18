@@ -283,7 +283,7 @@ contract IndaHashToken is ERC20Token {
 
   /* ICO tokens per ETH */
   
-  uint public TOKENS_PER_ETH = 3200 * E6; // rate during last ICO week
+  uint public tokensPerEth = 3200 * E6; // rate during last ICO week
 
   uint public constant BONUS_PRESALE      = 40;
   uint public constant BONUS_ICO_WEEK_ONE = 20;
@@ -461,12 +461,12 @@ contract IndaHashToken is ERC20Token {
     AdminWalletUpdated(adminWallet);
   }
 
-  /* Change TOKENS_PER_ETH before ICO start */
+  /* Change tokensPerEth before ICO start */
   
   function updateTokensPerEth(uint _tokensPerEth) onlyOwner
   {
-    require( atNow() < DATE_ICO_START );
-    TOKENS_PER_ETH = _tokensPerEth;
+    require( atNow() < DATE_PRESALE_START );
+    tokensPerEth = _tokensPerEth;
     TokensPerEthUpdated(_tokensPerEth);
   }
 
@@ -522,7 +522,7 @@ contract IndaHashToken is ERC20Token {
     require( isPresale || isIco );
 
     // get baseline number of tokens
-    tokens = TOKENS_PER_ETH.mul(msg.value) / 1 ether;
+    tokens = tokensPerEth.mul(msg.value) / 1 ether;
     
     // apply bonuses (none for last week)
     if (isPresale) {
