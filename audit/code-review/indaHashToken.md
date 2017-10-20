@@ -733,19 +733,25 @@ contract IndaHashToken is ERC20Token {
 
   /* Override "transfer" (ERC20) */
 
+  // BK Ok
   function transfer(address _to, uint _amount) 
     returns (bool success)
   {
+    // BK Ok
     require( isTransferable() );
+    // BK Ok
     return super.transfer(_to, _amount);
   }
   
   /* Override "transferFrom" (ERC20) */
 
+  // BK Ok
   function transferFrom(address _from, address _to, uint _amount) 
     returns (bool success)
   {
+    // BK Ok
     require( isTransferable() );
+    // BK Ok
     return super.transferFrom(_from, _to, _amount);
   }
 
@@ -758,33 +764,43 @@ contract IndaHashToken is ERC20Token {
   /* may have received minted tokens, so the token balance after a refund */ 
   /* may still be positive */
   
+  // BK Ok - Anyone can call this if refunds are due
   function reclaimFunds() external
   {
+    // BK Next 2 Ok
     uint tokens; // tokens to destroy
     uint amount; // refund amount
     
     // ico is finished and was not successful
+    // BK Ok
     require( atNow() > DATE_ICO_END && !icoThresholdReached() );
     
     // check if refund has already been claimed
+    // BK Ok
     require( !refundClaimed[msg.sender] );
     
     // check if there is anything to refund
+    // BK Ok
     require( icoEtherContributed[msg.sender] > 0 );
     
     // update variables affected by refund
+    // BK Next 2 Ok
     tokens = icoTokensReceived[msg.sender];
     amount = icoEtherContributed[msg.sender];
 
+    // BK Next 2 Ok
     balances[msg.sender] = balances[msg.sender].sub(tokens);
     tokensIssuedTotal    = tokensIssuedTotal.sub(tokens);
     
+    // BK Ok
     refundClaimed[msg.sender] = true;
     
     // transfer out refund
+    // BK Ok
     msg.sender.transfer(amount);
     
     //log
+    // BK Next 2 Ok
     Transfer(msg.sender, 0x0, tokens);
     Refund(msg.sender, amount, tokens);
   }
@@ -792,30 +808,40 @@ contract IndaHashToken is ERC20Token {
   /* Claiming of "airdropped" tokens in case of successful crowdsale */
   /* Can be done by token holder, or by adminWallet */ 
 
+  // BK Ok - Anyone can execute this
   function claimAirdrop() external
   {
+    // BK Ok
     doAirdrop(msg.sender);
   }
 
+  // BK Ok - Only admin can execute this
   function adminClaimAirdrop(address _participant) external
   {
+    // BK Ok
     require( msg.sender == adminWallet );
+    // BK Ok
     doAirdrop(_participant);
   }
 
+  // BK Ok - Internal
   function doAirdrop(address _participant) internal
   {
+    // BK Ok
     uint airdrop = computeAirdrop(_participant);
 
+    // BK Ok
     require( airdrop > 0 );
 
     // update balances and token issue volume
+    // BK Next 4 Ok
     airdropClaimed[_participant] = true;
     balances[_participant] = balances[_participant].add(airdrop);
     tokensIssuedTotal      = tokensIssuedTotal.add(airdrop);
     tokensClaimedAirdrop   = tokensClaimedAirdrop.add(airdrop);
     
     // log
+    // BK Next 2 Ok - Log event
     Airdrop(_participant, airdrop, balances[_participant]);
     Transfer(0x0, _participant, airdrop);
   }
@@ -826,21 +852,28 @@ contract IndaHashToken is ERC20Token {
   /* If an account has tokens from the ico, the amount after the airdrop */
   /* will be newBalance = tokens * TOKEN_SUPPLY_ICO / tokensIssuedIco */
       
+  // BK Ok - Constant function
   function computeAirdrop(address _participant) constant
     returns (uint airdrop)
   {
     // return 0 if it's too early or ico was not successful
+    // BK Ok
     if ( atNow() < DATE_ICO_END || !icoThresholdReached() ) return 0;
     
     // return  0 is the airdrop was already claimed
+    // BK Ok
     if( airdropClaimed[_participant] ) return 0;
 
     // return 0 if the account does not hold any crowdsale tokens
+    // BK Ok
     if( icoTokensReceived[_participant] == 0 ) return 0;
     
     // airdrop amount
+    // BK Ok
     uint tokens = icoTokensReceived[_participant];
+    // BK Ok
     uint newBalance = tokens.mul(TOKEN_SUPPLY_ICO) / tokensIssuedIco;
+    // BK Ok
     airdrop = newBalance - tokens;
   }  
 
