@@ -20,23 +20,17 @@ pragma solidity ^0.4.16;
 
 library SafeMath3 {
 
-  function mul(uint a, uint b) internal constant 
-    returns (uint c)
-  {
+  function mul(uint a, uint b) internal constant returns (uint c) {
     c = a * b;
     assert( a == 0 || c / a == b );
   }
 
-  function sub(uint a, uint b) internal constant
-    returns (uint)
-  {
+  function sub(uint a, uint b) internal constant returns (uint) {
     assert( b <= a );
     return a - b;
   }
 
-  function add(uint a, uint b) internal constant
-    returns (uint c)
-  {
+  function add(uint a, uint b) internal constant returns (uint c) {
     c = a + b;
     assert( c >= a );
   }
@@ -57,41 +51,30 @@ contract Owned {
 
   // Events ---------------------------
 
-  event OwnershipTransferProposed(
-    address indexed _from,
-    address indexed _to
-  );
-
-  event OwnershipTransferred(
-    address indexed _from,
-    address indexed _to
-  );
+  event OwnershipTransferProposed(address indexed _from, address indexed _to);
+  event OwnershipTransferred(address indexed _from, address indexed _to);
 
   // Modifier -------------------------
 
-  modifier onlyOwner
-  {
+  modifier onlyOwner {
     require( msg.sender == owner );
     _;
   }
 
   // Functions ------------------------
 
-  function Owned()
-  {
+  function Owned() {
     owner = msg.sender;
   }
 
-  function transferOwnership(address _newOwner) onlyOwner
-  {
+  function transferOwnership(address _newOwner) onlyOwner {
     require( _newOwner != owner );
     require( _newOwner != address(0x0) );
     OwnershipTransferProposed(owner, _newOwner);
     newOwner = _newOwner;
   }
 
-  function acceptOwnership()
-  {
+  function acceptOwnership() {
     require(msg.sender == newOwner);
     OwnershipTransferred(owner, newOwner);
     owner = newOwner;
@@ -111,37 +94,17 @@ contract ERC20Interface {
 
   // Events ---------------------------
 
-  event Transfer(
-    address indexed _from,
-    address indexed _to,
-    uint _value
-  );
-  
-  event Approval(
-    address indexed _owner,
-    address indexed _spender,
-    uint _value
-  );
+  event Transfer(address indexed _from, address indexed _to, uint _value);
+  event Approval(address indexed _owner, address indexed _spender, uint _value);
 
   // Functions ------------------------
 
-  function totalSupply() constant
-    returns (uint);
-  
-  function balanceOf(address _owner) constant 
-    returns (uint balance);
-  
-  function transfer(address _to, uint _value)
-    returns (bool success);
-  
-  function transferFrom(address _from, address _to, uint _value) 
-    returns (bool success);
-  
-  function approve(address _spender, uint _value) 
-    returns (bool success);
-  
-  function allowance(address _owner, address _spender) constant 
-    returns (uint remaining);
+  function totalSupply() constant returns (uint);
+  function balanceOf(address _owner) constant returns (uint balance);
+  function transfer(address _to, uint _value) returns (bool success);
+  function transferFrom(address _from, address _to, uint _value) returns (bool success);
+  function approve(address _spender, uint _value) returns (bool success);
+  function allowance(address _owner, address _spender) constant returns (uint remaining);
 
 }
 
@@ -158,24 +121,27 @@ contract ERC20Token is ERC20Interface, Owned {
   
   using SafeMath3 for uint;
 
+  uint public tokensIssuedTotal = 0;
   mapping(address => uint) balances;
   mapping(address => mapping (address => uint)) allowed;
 
   // Functions ------------------------
 
+  /* Total token supply */
+
+  function totalSupply() constant returns (uint) {
+    return tokensIssuedTotal;
+  }
+
   /* Get the account balance for an address */
 
-  function balanceOf(address _owner) constant 
-    returns (uint balance)
-  {
+  function balanceOf(address _owner) constant returns (uint balance) {
     return balances[_owner];
   }
 
   /* Transfer the balance from owner's account to another account */
 
-  function transfer(address _to, uint _amount) 
-    returns (bool success)
-  {
+  function transfer(address _to, uint _amount) returns (bool success) {
     // Amount sent cannot exceed balance
     require( balances[msg.sender] >= _amount );
 
@@ -190,14 +156,7 @@ contract ERC20Token is ERC20Interface, Owned {
 
   /* Allow _spender to withdraw from your account up to _amount */
 
-  function approve(address _spender, uint _amount) 
-    returns (bool success)
-  {
-    // before changing the approve amount for an address, its allowance
-    // must be reset to 0 to mitigate the race condition described here:
-    // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
-    require( _amount == 0 || allowed[msg.sender][_spender] == 0 );
-      
+  function approve(address _spender, uint _amount) returns (bool success) {
     // approval amount cannot exceed the balance
     require ( balances[msg.sender] >= _amount );
       
@@ -212,9 +171,7 @@ contract ERC20Token is ERC20Interface, Owned {
   /* Spender of tokens transfers tokens from the owner's balance */
   /* Must be pre-approved by owner */
 
-  function transferFrom(address _from, address _to, uint _amount) 
-    returns (bool success) 
-  {
+  function transferFrom(address _from, address _to, uint _amount) returns (bool success) {
     // balance checks
     require( balances[_from] >= _amount );
     require( allowed[_from][msg.sender] >= _amount );
@@ -232,9 +189,7 @@ contract ERC20Token is ERC20Interface, Owned {
   /* Returns the amount of tokens approved by the owner */
   /* that can be transferred by spender */
 
-  function allowance(address _owner, address _spender) constant 
-    returns (uint remaining)
-  {
+  function allowance(address _owner, address _spender) constant returns (uint remaining) {
     return allowed[_owner][_spender];
   }
 
@@ -297,7 +252,6 @@ contract IndaHashToken is ERC20Token {
 
   uint public icoEtherReceived = 0; // Ether actually received by the contract
 
-  uint public tokensIssuedTotal = 0;
   uint public tokensIssuedIco   = 0;
   uint public tokensIssuedMkt   = 0;
   
@@ -317,42 +271,13 @@ contract IndaHashToken is ERC20Token {
 
   // Events ---------------------------
   
-  event WalletUpdated(
-    address _newWallet
-  );
-  
-  event AdminWalletUpdated(
-    address _newAdminWallet
-  );
-
-  event TokensPerEthUpdated(
-    uint _tokensPerEth
-  );
-
-  event TokensMinted(
-    address indexed _owner,
-    uint _tokens,
-    uint _balance
-  );
-
-  event TokensIssued(
-    address indexed _owner,
-    uint _tokens, 
-    uint _balance, 
-    uint _etherContributed
-  );
-  
-  event Refund(
-    address indexed _owner,
-    uint _amount,
-    uint _tokens
-  );
-
-  event Airdrop(
-    address indexed _owner,
-    uint _amount,
-    uint _balance
-  );
+  event WalletUpdated(address _newWallet);
+  event AdminWalletUpdated(address _newAdminWallet);
+  event TokensPerEthUpdated(uint _tokensPerEth);
+  event TokensMinted(address indexed _owner, uint _tokens, uint _balance);
+  event TokensIssued(address indexed _owner, uint _tokens, uint _balance, uint _etherContributed);
+  event Refund(address indexed _owner, uint _amount, uint _tokens);
+  event Airdrop(address indexed _owner, uint _amount, uint _balance);
 
   // Basic Functions ------------------
 
@@ -366,8 +291,7 @@ contract IndaHashToken is ERC20Token {
 
   /* Fallback */
   
-  function () payable
-  {
+  function () payable {
     buyTokens();
   }
   
@@ -375,69 +299,30 @@ contract IndaHashToken is ERC20Token {
   
   /* What time is it? */
   
-  function atNow() constant
-    returns (uint)
-  {
+  function atNow() constant returns (uint) {
     return now;
   }
   
   /* Has the minimum threshold been reached? */
   
-  function icoThresholdReached() constant
-    returns (bool thresholdReached)
-  {
+  function icoThresholdReached() constant returns (bool thresholdReached) {
      if (tokensIssuedIco < MIN_FUNDING_GOAL) return false;
      return true;
   }  
   
   /* Are tokens transferable? */
 
-  function isTransferable() constant
-    returns (bool transferable)
-  {
+  function isTransferable() constant returns (bool transferable) {
      if ( !icoThresholdReached() ) return false;
      if ( atNow() < DATE_ICO_END + COOLDOWN_PERIOD ) return false;
      return true;
-  }
-  
-  /* Crowdsale contribution in Ether */
-
-  function icoEtherContributedOf(address _owner) constant 
-    returns (uint)
-  {
-    return icoEtherContributed[_owner];
-  }
-
-  /* Number of tokens received during crowdsale */  
-  
-  function icoTokensReceivedOf(address _owner) constant 
-    returns (uint)
-  {
-    return icoTokensReceived[_owner];
-  }
-
-  /* Has a refund been claimed? */  
-  
-  function isRefundClaimed(address _owner) constant 
-    returns (bool)
-  {
-    return refundClaimed[_owner];
-  } 
-
-  /* Has the aidrop been claimed? */  
-  
-  function isAirdropClaimed(address _owner) constant 
-    returns (bool)
-  {
-    return airdropClaimed[_owner];
   }
   
   // Owner Functions ------------------
   
   /* Change the crowdsale wallet address */
 
-  function setWallet(address _wallet) onlyOwner
-  {
+  function setWallet(address _wallet) onlyOwner {
     require( _wallet != address(0x0) );
     wallet = _wallet;
     WalletUpdated(wallet);
@@ -445,8 +330,7 @@ contract IndaHashToken is ERC20Token {
 
   /* Change the admin wallet address */
 
-  function setAdminWallet(address _wallet) onlyOwner
-  {
+  function setAdminWallet(address _wallet) onlyOwner {
     require( _wallet != address(0x0) );
     adminWallet = _wallet;
     AdminWalletUpdated(adminWallet);
@@ -454,8 +338,7 @@ contract IndaHashToken is ERC20Token {
 
   /* Change tokensPerEth before ICO start */
   
-  function updateTokensPerEth(uint _tokensPerEth) onlyOwner
-  {
+  function updateTokensPerEth(uint _tokensPerEth) onlyOwner {
     require( atNow() < DATE_PRESALE_START );
     tokensPerEth = _tokensPerEth;
     TokensPerEthUpdated(_tokensPerEth);
@@ -463,8 +346,7 @@ contract IndaHashToken is ERC20Token {
 
   /* Minting of marketing tokens by owner */
 
-  function mintMarketing(address _participant, uint _tokens) onlyOwner 
-  {
+  function mintMarketing(address _participant, uint _tokens) onlyOwner {
     // Check amount
     require( _tokens <= TOKEN_SUPPLY_MKT.sub(tokensIssuedMkt) );
     
@@ -488,9 +370,7 @@ contract IndaHashToken is ERC20Token {
 
   /* Transfer out any accidentally sent ERC20 tokens */
 
-  function transferAnyERC20Token(address tokenAddress, uint amount) onlyOwner 
-    returns (bool success) 
-  {
+  function transferAnyERC20Token(address tokenAddress, uint amount) onlyOwner returns (bool success) {
       return ERC20Interface(tokenAddress).transfer(owner, amount);
   }
 
@@ -498,8 +378,7 @@ contract IndaHashToken is ERC20Token {
 
   /* Accept ETH during crowdsale (called by default function) */
 
-  function buyTokens() private
-  {
+  function buyTokens() private {
     uint ts = atNow();
     bool isPresale = false;
     bool isIco = false;
@@ -551,28 +430,16 @@ contract IndaHashToken is ERC20Token {
   
   // ERC20 functions ------------------
 
-  /* Implement totalSupply() ERC20 function */
-  
-  function totalSupply() constant
-    returns (uint)
-  {
-    return tokensIssuedTotal;
-  }
-
   /* Override "transfer" (ERC20) */
 
-  function transfer(address _to, uint _amount) 
-    returns (bool success)
-  {
+  function transfer(address _to, uint _amount) returns (bool success) {
     require( isTransferable() );
     return super.transfer(_to, _amount);
   }
   
   /* Override "transferFrom" (ERC20) */
 
-  function transferFrom(address _from, address _to, uint _amount) 
-    returns (bool success)
-  {
+  function transferFrom(address _from, address _to, uint _amount) returns (bool success) {
     require( isTransferable() );
     return super.transferFrom(_from, _to, _amount);
   }
@@ -586,8 +453,7 @@ contract IndaHashToken is ERC20Token {
   /* may have received minted tokens, so the token balance after a refund */ 
   /* may still be positive */
   
-  function reclaimFunds() external
-  {
+  function reclaimFunds() external {
     uint tokens; // tokens to destroy
     uint amount; // refund amount
     
@@ -620,19 +486,16 @@ contract IndaHashToken is ERC20Token {
   /* Claiming of "airdropped" tokens in case of successful crowdsale */
   /* Can be done by token holder, or by adminWallet */ 
 
-  function claimAirdrop() external
-  {
+  function claimAirdrop() external {
     doAirdrop(msg.sender);
   }
 
-  function adminClaimAirdrop(address _participant) external
-  {
+  function adminClaimAirdrop(address _participant) external {
     require( msg.sender == adminWallet );
     doAirdrop(_participant);
   }
 
-  function doAirdrop(address _participant) internal
-  {
+  function doAirdrop(address _participant) internal {
     uint airdrop = computeAirdrop(_participant);
 
     require( airdrop > 0 );
@@ -654,9 +517,7 @@ contract IndaHashToken is ERC20Token {
   /* If an account has tokens from the ico, the amount after the airdrop */
   /* will be newBalance = tokens * TOKEN_SUPPLY_ICO / tokensIssuedIco */
       
-  function computeAirdrop(address _participant) constant
-    returns (uint airdrop)
-  {
+  function computeAirdrop(address _participant) constant returns (uint airdrop) {
     // return 0 if it's too early or ico was not successful
     if ( atNow() < DATE_ICO_END || !icoThresholdReached() ) return 0;
     
