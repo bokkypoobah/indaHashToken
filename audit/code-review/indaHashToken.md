@@ -32,9 +32,7 @@ pragma solidity ^0.4.16;
 library SafeMath3 {
 
   // BK Ok
-  function mul(uint a, uint b) internal constant 
-    returns (uint c)
-  {
+  function mul(uint a, uint b) internal constant returns (uint c) {
     // BK Ok
     c = a * b;
     // BK Ok
@@ -42,9 +40,7 @@ library SafeMath3 {
   }
 
   // BK Ok
-  function sub(uint a, uint b) internal constant
-    returns (uint)
-  {
+  function sub(uint a, uint b) internal constant returns (uint) {
     // BK Ok
     assert( b <= a );
     // BK Ok
@@ -52,9 +48,7 @@ library SafeMath3 {
   }
 
   // BK Ok
-  function add(uint a, uint b) internal constant
-    returns (uint c)
-  {
+  function add(uint a, uint b) internal constant returns (uint c) {
     // BK Ok
     c = a + b;
     // BK Ok
@@ -79,23 +73,14 @@ contract Owned {
 
   // Events ---------------------------
 
-  // BK Ok - Event
-  event OwnershipTransferProposed(
-    address indexed _from,
-    address indexed _to
-  );
-
-  // BK Ok - Event
-  event OwnershipTransferred(
-    address indexed _from,
-    address indexed _to
-  );
+  // BK Next 2 Ok - Event
+  event OwnershipTransferProposed(address indexed _from, address indexed _to);
+  event OwnershipTransferred(address indexed _from, address indexed _to);
 
   // Modifier -------------------------
 
   // BK Ok
-  modifier onlyOwner
-  {
+  modifier onlyOwner {
     // BK Ok
     require( msg.sender == owner );
     // BK Ok
@@ -105,15 +90,13 @@ contract Owned {
   // Functions ------------------------
 
   // BK Ok - Constructor
-  function Owned()
-  {
+  function Owned() {
     // BK Ok
     owner = msg.sender;
   }
 
   // BK Ok - Only owner can execute
-  function transferOwnership(address _newOwner) onlyOwner
-  {
+  function transferOwnership(address _newOwner) onlyOwner {
     // BK Ok
     require( _newOwner != owner );
     // BK Ok
@@ -125,8 +108,7 @@ contract Owned {
   }
 
   // BK Ok - Only new owner can execute
-  function acceptOwnership()
-  {
+  function acceptOwnership() {
     // BK Ok
     require(msg.sender == newOwner);
     // BK Ok
@@ -150,50 +132,23 @@ contract ERC20Interface {
 
   // Events ---------------------------
 
-  // BK Ok - Event
-  event Transfer(
-    address indexed _from,
-    address indexed _to,
-    uint _value
-  );
-  
-  // BK Ok - Event
-  event Approval(
-    address indexed _owner,
-    address indexed _spender,
-    uint _value
-  );
+  // BK Next 2 Ok - Event
+  event Transfer(address indexed _from, address indexed _to, uint _value);
+  event Approval(address indexed _owner, address indexed _spender, uint _value);
 
   // Functions ------------------------
 
-  // BK Ok
-  function totalSupply() constant
-    returns (uint);
-  
-  // BK Ok
-  function balanceOf(address _owner) constant 
-    returns (uint balance);
-
-  // BK Ok
-  function transfer(address _to, uint _value)
-    returns (bool success);
-  
-  // BK Ok
-  function transferFrom(address _from, address _to, uint _value) 
-    returns (bool success);
-  
-  // BK Ok
-  function approve(address _spender, uint _value) 
-    returns (bool success);
-  
-  // BK Ok
-  function allowance(address _owner, address _spender) constant 
-    returns (uint remaining);
+  // BK Next 6 Ok
+  function totalSupply() constant returns (uint);
+  function balanceOf(address _owner) constant returns (uint balance);
+  function transfer(address _to, uint _value) returns (bool success);
+  function transferFrom(address _from, address _to, uint _value) returns (bool success);
+  function approve(address _spender, uint _value) returns (bool success);
+  function allowance(address _owner, address _spender) constant returns (uint remaining);
 
 }
 
 
-// BK NOTE - ERC20Token should implement all required functions, including totalSupply()
 // ----------------------------------------------------------------------------
 //
 // ERC Token Standard #20
@@ -209,18 +164,24 @@ contract ERC20Token is ERC20Interface, Owned {
   using SafeMath3 for uint;
 
   // BK Ok
+  uint public tokensIssuedTotal = 0;
+  // BK Ok
   mapping(address => uint) balances;
   // BK Ok
   mapping(address => mapping (address => uint)) allowed;
 
   // Functions ------------------------
 
+  /* Total token supply */
+
+  function totalSupply() constant returns (uint) {
+    return tokensIssuedTotal;
+  }
+
   /* Get the account balance for an address */
 
   // BK Ok - Constant function
-  function balanceOf(address _owner) constant 
-    returns (uint balance)
-  {
+  function balanceOf(address _owner) constant returns (uint balance) {
     // BK Ok
     return balances[_owner];
   }
@@ -228,9 +189,7 @@ contract ERC20Token is ERC20Interface, Owned {
   /* Transfer the balance from owner's account to another account */
 
   // BK Ok
-  function transfer(address _to, uint _amount) 
-    returns (bool success)
-  {
+  function transfer(address _to, uint _amount) returns (bool success) {
     // Amount sent cannot exceed balance
     // BK Ok
     require( balances[msg.sender] >= _amount );
@@ -251,15 +210,7 @@ contract ERC20Token is ERC20Interface, Owned {
   /* Allow _spender to withdraw from your account up to _amount */
 
   // BK Ok
-  function approve(address _spender, uint _amount) 
-    returns (bool success)
-  {
-    // before changing the approve amount for an address, its allowance
-    // must be reset to 0 to mitigate the race condition described here:
-    // https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
-    // BK NOTE - Consider removing - see NOTE in https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20-token-standard.md#approve
-    require( _amount == 0 || allowed[msg.sender][_spender] == 0 );
-      
+  function approve(address _spender, uint _amount) returns (bool success) {
     // approval amount cannot exceed the balance
     // BK Ok
     require ( balances[msg.sender] >= _amount );
@@ -279,9 +230,7 @@ contract ERC20Token is ERC20Interface, Owned {
   /* Must be pre-approved by owner */
 
   // BK Ok
-  function transferFrom(address _from, address _to, uint _amount) 
-    returns (bool success) 
-  {
+  function transferFrom(address _from, address _to, uint _amount) returns (bool success) {
     // balance checks
     // BK Ok
     require( balances[_from] >= _amount );
@@ -307,9 +256,7 @@ contract ERC20Token is ERC20Interface, Owned {
   /* that can be transferred by spender */
 
   // BK Ok - Constant function
-  function allowance(address _owner, address _spender) constant 
-    returns (uint remaining)
-  {
+  function allowance(address _owner, address _spender) constant returns (uint remaining) {
     // BK Ok
     return allowed[_owner][_spender];
   }
@@ -388,8 +335,7 @@ contract IndaHashToken is ERC20Token {
   // BK Ok
   uint public icoEtherReceived = 0; // Ether actually received by the contract
 
-  // BK Next 3 Ok
-  uint public tokensIssuedTotal = 0;
+  // BK Next 2 Ok
   uint public tokensIssuedIco   = 0;
   uint public tokensIssuedMkt   = 0;
   
@@ -412,49 +358,14 @@ contract IndaHashToken is ERC20Token {
 
   // Events ---------------------------
   
-  // BK Ok - Event
-  event WalletUpdated(
-    address _newWallet
-  );
-  
-  // BK Ok - Event
-  event AdminWalletUpdated(
-    address _newAdminWallet
-  );
-
-  // BK Ok - Event
-  event TokensPerEthUpdated(
-    uint _tokensPerEth
-  );
-
-  // BK Ok - Event
-  event TokensMinted(
-    address indexed _owner,
-    uint _tokens,
-    uint _balance
-  );
-
-  // BK Ok - Event
-  event TokensIssued(
-    address indexed _owner,
-    uint _tokens, 
-    uint _balance, 
-    uint _etherContributed
-  );
-  
-  // BK Ok - Event
-  event Refund(
-    address indexed _owner,
-    uint _amount,
-    uint _tokens
-  );
-
-  // BK Ok - Event
-  event Airdrop(
-    address indexed _owner,
-    uint _amount,
-    uint _balance
-  );
+  // BK Next 7 Ok - Event
+  event WalletUpdated(address _newWallet);
+  event AdminWalletUpdated(address _newAdminWallet);
+  event TokensPerEthUpdated(uint _tokensPerEth);
+  event TokensMinted(address indexed _owner, uint _tokens, uint _balance);
+  event TokensIssued(address indexed _owner, uint _tokens, uint _balance, uint _etherContributed);
+  event Refund(address indexed _owner, uint _amount, uint _tokens);
+  event Airdrop(address indexed _owner, uint _amount, uint _balance);
 
   // Basic Functions ------------------
 
@@ -472,8 +383,7 @@ contract IndaHashToken is ERC20Token {
   /* Fallback */
   
   // BK Ok - Fallback, payable
-  function () payable
-  {
+  function () payable {
     // BK Ok
     buyTokens();
   }
@@ -483,9 +393,7 @@ contract IndaHashToken is ERC20Token {
   /* What time is it? */
   
   // BK Ok - Constant function
-  function atNow() constant
-    returns (uint)
-  {
+  function atNow() constant returns (uint) {
     // BK Ok
     return now;
   }
@@ -493,9 +401,7 @@ contract IndaHashToken is ERC20Token {
   /* Has the minimum threshold been reached? */
   
   // BK Ok - Constant function
-  function icoThresholdReached() constant
-    returns (bool thresholdReached)
-  {
+  function icoThresholdReached() constant returns (bool thresholdReached) {
      // BK Ok
      if (tokensIssuedIco < MIN_FUNDING_GOAL) return false;
      // BK Ok
@@ -505,9 +411,7 @@ contract IndaHashToken is ERC20Token {
   /* Are tokens transferable? */
 
   // BK Ok - Constant function
-  function isTransferable() constant
-    returns (bool transferable)
-  {
+  function isTransferable() constant returns (bool transferable) {
      // BK Ok
      if ( !icoThresholdReached() ) return false;
      // BK Ok
@@ -516,57 +420,12 @@ contract IndaHashToken is ERC20Token {
      return true;
   }
   
-  /* Crowdsale contribution in Ether */
-
-  // BK NOTE - Use can execute icoEtherContributed(address) which will provide the exact same result
-  // BK Ok - Constant function
-  function icoEtherContributedOf(address _owner) constant 
-    returns (uint)
-  {
-    // BK Ok
-    return icoEtherContributed[_owner];
-  }
-
-  /* Number of tokens received during crowdsale */  
-  
-  // BK NOTE - Use can execute icoTokensReceived(address) which will provide the exact same result
-  // BK Ok - Constant function
-  function icoTokensReceivedOf(address _owner) constant 
-    returns (uint)
-  {
-    // BK Ok
-    return icoTokensReceived[_owner];
-  }
-
-  /* Has a refund been claimed? */  
-  
-  // BK NOTE - Use can execute refundClaimed(address) which will provide the exact same result
-  // BK Ok - Constant function
-  function isRefundClaimed(address _owner) constant 
-    returns (bool)
-  {
-    // BK Ok
-    return refundClaimed[_owner];
-  } 
-
-  /* Has the aidrop been claimed? */  
-  
-  // BK NOTE - Use can execute airdropClaimed(address) which will provide the exact same result
-  // BK Ok - Constant function
-  function isAirdropClaimed(address _owner) constant 
-    returns (bool)
-  {
-    // BK Ok
-    return airdropClaimed[_owner];
-  }
-  
   // Owner Functions ------------------
   
   /* Change the crowdsale wallet address */
 
   // BK Ok - Only owner can execute
-  function setWallet(address _wallet) onlyOwner
-  {
+  function setWallet(address _wallet) onlyOwner {
     // BK Ok
     require( _wallet != address(0x0) );
     // BK Ok
@@ -578,8 +437,7 @@ contract IndaHashToken is ERC20Token {
   /* Change the admin wallet address */
 
   // BK Ok - Only owner can execute
-  function setAdminWallet(address _wallet) onlyOwner
-  {
+  function setAdminWallet(address _wallet) onlyOwner {
     // BK Ok
     require( _wallet != address(0x0) );
     // BK Ok
@@ -591,8 +449,7 @@ contract IndaHashToken is ERC20Token {
   /* Change tokensPerEth before ICO start */
   
   // BK Ok - Only owner can execute, before the Presale starts
-  function updateTokensPerEth(uint _tokensPerEth) onlyOwner
-  {
+  function updateTokensPerEth(uint _tokensPerEth) onlyOwner {
     // BK Ok
     require( atNow() < DATE_PRESALE_START );
     // BK Ok
@@ -604,8 +461,7 @@ contract IndaHashToken is ERC20Token {
   /* Minting of marketing tokens by owner */
 
   // BK Ok - Only owner can execute
-  function mintMarketing(address _participant, uint _tokens) onlyOwner 
-  {
+  function mintMarketing(address _participant, uint _tokens) onlyOwner {
     // Check amount
     // BK Ok
     require( _tokens <= TOKEN_SUPPLY_MKT.sub(tokensIssuedMkt) );
@@ -636,9 +492,7 @@ contract IndaHashToken is ERC20Token {
   /* Transfer out any accidentally sent ERC20 tokens */
 
   // BK Ok - Only owner can execute
-  function transferAnyERC20Token(address tokenAddress, uint amount) onlyOwner 
-    returns (bool success) 
-  {
+  function transferAnyERC20Token(address tokenAddress, uint amount) onlyOwner returns (bool success) {
       // BK Ok
       return ERC20Interface(tokenAddress).transfer(owner, amount);
   }
@@ -648,8 +502,7 @@ contract IndaHashToken is ERC20Token {
   /* Accept ETH during crowdsale (called by default function) */
 
   // BK Ok
-  function buyTokens() private
-  {
+  function buyTokens() private {
     // BK Ok
     uint ts = atNow();
     // BK Ok
@@ -721,22 +574,10 @@ contract IndaHashToken is ERC20Token {
   
   // ERC20 functions ------------------
 
-  /* Implement totalSupply() ERC20 function */
-  
-  // BK Ok - Constant function
-  function totalSupply() constant
-    returns (uint)
-  {
-    // BK Ok
-    return tokensIssuedTotal;
-  }
-
   /* Override "transfer" (ERC20) */
 
   // BK Ok
-  function transfer(address _to, uint _amount) 
-    returns (bool success)
-  {
+  function transfer(address _to, uint _amount) returns (bool success) {
     // BK Ok
     require( isTransferable() );
     // BK Ok
@@ -746,9 +587,7 @@ contract IndaHashToken is ERC20Token {
   /* Override "transferFrom" (ERC20) */
 
   // BK Ok
-  function transferFrom(address _from, address _to, uint _amount) 
-    returns (bool success)
-  {
+  function transferFrom(address _from, address _to, uint _amount) returns (bool success) {
     // BK Ok
     require( isTransferable() );
     // BK Ok
@@ -765,8 +604,7 @@ contract IndaHashToken is ERC20Token {
   /* may still be positive */
   
   // BK Ok - Anyone can call this if refunds are due
-  function reclaimFunds() external
-  {
+  function reclaimFunds() external {
     // BK Next 2 Ok
     uint tokens; // tokens to destroy
     uint amount; // refund amount
@@ -809,15 +647,13 @@ contract IndaHashToken is ERC20Token {
   /* Can be done by token holder, or by adminWallet */ 
 
   // BK Ok - Anyone can execute this
-  function claimAirdrop() external
-  {
+  function claimAirdrop() external {
     // BK Ok
     doAirdrop(msg.sender);
   }
 
   // BK Ok - Only admin can execute this
-  function adminClaimAirdrop(address _participant) external
-  {
+  function adminClaimAirdrop(address _participant) external {
     // BK Ok
     require( msg.sender == adminWallet );
     // BK Ok
@@ -825,8 +661,7 @@ contract IndaHashToken is ERC20Token {
   }
 
   // BK Ok - Internal
-  function doAirdrop(address _participant) internal
-  {
+  function doAirdrop(address _participant) internal {
     // BK Ok
     uint airdrop = computeAirdrop(_participant);
 
@@ -853,9 +688,7 @@ contract IndaHashToken is ERC20Token {
   /* will be newBalance = tokens * TOKEN_SUPPLY_ICO / tokensIssuedIco */
       
   // BK Ok - Constant function
-  function computeAirdrop(address _participant) constant
-    returns (uint airdrop)
-  {
+  function computeAirdrop(address _participant) constant returns (uint airdrop) {
     // return 0 if it's too early or ico was not successful
     // BK Ok
     if ( atNow() < DATE_ICO_END || !icoThresholdReached() ) return 0;

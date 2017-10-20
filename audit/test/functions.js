@@ -121,9 +121,10 @@ function printTxData(name, txId) {
   var gasPrice = tx.gasPrice;
   var gasCostETH = tx.gasPrice.mul(txReceipt.gasUsed).div(1e18);
   var gasCostUSD = gasCostETH.mul(ethPriceUSD);
-  console.log("RESULT: " + name + " gas=" + tx.gas + " gasUsed=" + txReceipt.gasUsed + " costETH=" + gasCostETH +
-    " costUSD=" + gasCostUSD + " @ ETH/USD=" + ethPriceUSD + " gasPrice=" + gasPrice + " block=" + 
-    txReceipt.blockNumber + " txIx=" + tx.transactionIndex + " txId=" + txId);
+  console.log("RESULT: " + name + " status=" + txReceipt.status + " gas=" + tx.gas +
+      " gasUsed=" + txReceipt.gasUsed + " costETH=" + gasCostETH + " costUSD=" + gasCostUSD +
+      " @ ETH/USD=" + ethPriceUSD + " gasPrice=" + gasPrice + " block=" + 
+      txReceipt.blockNumber + " txIx=" + tx.transactionIndex + " txId=" + txId);
 }
 
 function assertEtherBalance(account, expectedBalance) {
@@ -206,6 +207,20 @@ function failIfGasEqualsGasUsedOrContractAddressNull(contractAddress, tx, msg) {
 
 
 //-----------------------------------------------------------------------------
+// Wait until some unixTime + additional seconds
+//-----------------------------------------------------------------------------
+function waitUntil(message, unixTime, addSeconds) {
+  var t = parseInt(unixTime) + parseInt(addSeconds) + parseInt(1);
+  var time = new Date(t * 1000);
+  console.log("RESULT: Waiting until '" + message + "' at " + unixTime + "+" + addSeconds + "s =" + time + " now=" + new Date());
+  while ((new Date()).getTime() <= time.getTime()) {
+  }
+  console.log("RESULT: Waited until '" + message + "' at at " + unixTime + "+" + addSeconds + "s =" + time + " now=" + new Date());
+  console.log("RESULT: ");
+}
+
+
+//-----------------------------------------------------------------------------
 // Token Contract
 //-----------------------------------------------------------------------------
 var tokenFromBlock = 0;
@@ -252,6 +267,8 @@ function printTokenContractDetails() {
     console.log("RESULT: token.tokensIssuedIco=" + contract.tokensIssuedIco().shift(-decimals));
     console.log("RESULT: token.tokensIssuedMkt=" + contract.tokensIssuedMkt().shift(-decimals));
     console.log("RESULT: token.tokensClaimedAirdrop=" + contract.tokensClaimedAirdrop().shift(-decimals));
+    console.log("RESULT: token.icoThresholdReached=" + contract.icoThresholdReached());
+    console.log("RESULT: token.isTransferable=" + contract.isTransferable());
 
     var latestBlock = eth.blockNumber;
     var i;

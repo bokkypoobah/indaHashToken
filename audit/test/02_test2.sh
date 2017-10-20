@@ -18,8 +18,8 @@ CROWDSALEJS=`grep ^CROWDSALEJS= settings.txt | sed "s/^.*=//"`
 DEPLOYMENTDATA=`grep ^DEPLOYMENTDATA= settings.txt | sed "s/^.*=//"`
 
 INCLUDEJS=`grep ^INCLUDEJS= settings.txt | sed "s/^.*=//"`
-TEST1OUTPUT=`grep ^TEST1OUTPUT= settings.txt | sed "s/^.*=//"`
-TEST1RESULTS=`grep ^TEST1RESULTS= settings.txt | sed "s/^.*=//"`
+TEST2OUTPUT=`grep ^TEST2OUTPUT= settings.txt | sed "s/^.*=//"`
+TEST2RESULTS=`grep ^TEST2RESULTS= settings.txt | sed "s/^.*=//"`
 
 CURRENTTIME=`date +%s`
 CURRENTTIMES=`date -r $CURRENTTIME -u`
@@ -30,24 +30,24 @@ DATE_PRESALE_END=`echo "$CURRENTTIME+150" | bc`
 DATE_PRESALE_END_S=`date -r $DATE_PRESALE_END -u`
 DATE_ICO_START=`echo "$CURRENTTIME+180" | bc`
 DATE_ICO_START_S=`date -r $DATE_ICO_START -u`
-DATE_ICO_END=`echo "$CURRENTTIME+270" | bc`
+DATE_ICO_END=`echo "$CURRENTTIME+210" | bc`
 DATE_ICO_END_S=`date -r $DATE_ICO_END -u`
 
-printf "MODE               = '$MODE'\n" | tee $TEST1OUTPUT
-printf "GETHATTACHPOINT    = '$GETHATTACHPOINT'\n" | tee -a $TEST1OUTPUT
-printf "PASSWORD           = '$PASSWORD'\n" | tee -a $TEST1OUTPUT
-printf "SOURCEDIR          = '$SOURCEDIR'\n" | tee -a $TEST1OUTPUT
-printf "CROWDSALESOL       = '$CROWDSALESOL'\n" | tee -a $TEST1OUTPUT
-printf "CROWDSALEJS        = '$CROWDSALEJS'\n" | tee -a $TEST1OUTPUT
-printf "DEPLOYMENTDATA     = '$DEPLOYMENTDATA'\n" | tee -a $TEST1OUTPUT
-printf "INCLUDEJS          = '$INCLUDEJS'\n" | tee -a $TEST1OUTPUT
-printf "TEST1OUTPUT        = '$TEST1OUTPUT'\n" | tee -a $TEST1OUTPUT
-printf "TEST1RESULTS       = '$TEST1RESULTS'\n" | tee -a $TEST1OUTPUT
-printf "CURRENTTIME        = '$CURRENTTIME' '$CURRENTTIMES'\n" | tee -a $TEST1OUTPUT
-printf "DATE_PRESALE_START = '$DATE_PRESALE_START' '$DATE_PRESALE_START_S'\n" | tee -a $TEST1OUTPUT
-printf "DATE_PRESALE_END   = '$DATE_PRESALE_END' '$DATE_PRESALE_END_S'\n" | tee -a $TEST1OUTPUT
-printf "DATE_ICO_START     = '$DATE_ICO_START' '$DATE_ICO_START_S'\n" | tee -a $TEST1OUTPUT
-printf "DATE_ICO_END       = '$DATE_ICO_END' '$DATE_ICO_END_S'\n" | tee -a $TEST1OUTPUT
+printf "MODE               = '$MODE'\n" | tee $TEST2OUTPUT
+printf "GETHATTACHPOINT    = '$GETHATTACHPOINT'\n" | tee -a $TEST2OUTPUT
+printf "PASSWORD           = '$PASSWORD'\n" | tee -a $TEST2OUTPUT
+printf "SOURCEDIR          = '$SOURCEDIR'\n" | tee -a $TEST2OUTPUT
+printf "CROWDSALESOL       = '$CROWDSALESOL'\n" | tee -a $TEST2OUTPUT
+printf "CROWDSALEJS        = '$CROWDSALEJS'\n" | tee -a $TEST2OUTPUT
+printf "DEPLOYMENTDATA     = '$DEPLOYMENTDATA'\n" | tee -a $TEST2OUTPUT
+printf "INCLUDEJS          = '$INCLUDEJS'\n" | tee -a $TEST2OUTPUT
+printf "TEST2OUTPUT        = '$TEST2OUTPUT'\n" | tee -a $TEST2OUTPUT
+printf "TEST2RESULTS       = '$TEST2RESULTS'\n" | tee -a $TEST2OUTPUT
+printf "CURRENTTIME        = '$CURRENTTIME' '$CURRENTTIMES'\n" | tee -a $TEST2OUTPUT
+printf "DATE_PRESALE_START = '$DATE_PRESALE_START' '$DATE_PRESALE_START_S'\n" | tee -a $TEST2OUTPUT
+printf "DATE_PRESALE_END   = '$DATE_PRESALE_END' '$DATE_PRESALE_END_S'\n" | tee -a $TEST2OUTPUT
+printf "DATE_ICO_START     = '$DATE_ICO_START' '$DATE_ICO_START_S'\n" | tee -a $TEST2OUTPUT
+printf "DATE_ICO_END       = '$DATE_ICO_END' '$DATE_ICO_END_S'\n" | tee -a $TEST2OUTPUT
 
 # Make copy of SOL file and modify start and end times ---
 # `cp modifiedContracts/SnipCoin.sol .`
@@ -61,15 +61,16 @@ printf "DATE_ICO_END       = '$DATE_ICO_END' '$DATE_ICO_END_S'\n" | tee -a $TEST
 `perl -pi -e "s/DATE_ICO_START \+ 7 days/DATE_ICO_START \+ 30 seconds/" $CROWDSALESOL`
 `perl -pi -e "s/DATE_ICO_START \+ 14 days/DATE_ICO_START \+ 60 seconds/" $CROWDSALESOL`
 `perl -pi -e "s/COOLDOWN_PERIOD \=  2 days/COOLDOWN_PERIOD \=  30 seconds/" $CROWDSALESOL`
+`perl -pi -e "s/CLAWBACK_PERIOD \= 90 days/CLAWBACK_PERIOD \= 60 seconds/" $CROWDSALESOL`
 
 DIFFS1=`diff $SOURCEDIR/$CROWDSALESOL $CROWDSALESOL`
-echo "--- Differences $SOURCEDIR/$CROWDSALESOL $CROWDSALESOL ---" | tee -a $TEST1OUTPUT
-echo "$DIFFS1" | tee -a $TEST1OUTPUT
+echo "--- Differences $SOURCEDIR/$CROWDSALESOL $CROWDSALESOL ---" | tee -a $TEST2OUTPUT
+echo "$DIFFS1" | tee -a $TEST2OUTPUT
 
-solc_0.4.16 --version | tee -a $TEST1OUTPUT
+solc_0.4.16 --version | tee -a $TEST2OUTPUT
 echo "var tokenOutput=`solc_0.4.16 --optimize --combined-json abi,bin,interface $CROWDSALESOL`;" > $CROWDSALEJS
 
-geth --verbosity 3 attach $GETHATTACHPOINT << EOF | tee -a $TEST1OUTPUT
+geth --verbosity 3 attach $GETHATTACHPOINT << EOF | tee -a $TEST2OUTPUT
 loadScript("$CROWDSALEJS");
 loadScript("functions.js");
 
@@ -206,58 +207,47 @@ console.log("RESULT: ");
 
 
 // -----------------------------------------------------------------------------
-// Wait for DATE_ICO_START + 2 Weeks [60 seconds] start
+// Wait for DATE_ICO_END 
 // -----------------------------------------------------------------------------
-waitUntil("DATE_ICO_START + 2 weeks [60 seconds]", token.DATE_ICO_START(), 60);
+waitUntil("DATE_ICO_END", token.DATE_ICO_END(), 0);
 
 
 // -----------------------------------------------------------------------------
-var sendContribution4Message = "Send Contribution After DATE_ICO_START + 2 weeks [60 seconds]";
+var refundTokenMessage = "Withdraw Refund";
 // -----------------------------------------------------------------------------
-console.log("RESULT: " + sendContribution4Message);
-var sendContribution4_1Tx = eth.sendTransaction({from: account7, to: tokenAddress, gas: 400000, value: web3.toWei("100", "ether")});
-var sendContribution4_2Tx = eth.sendTransaction({from: account8, to: tokenAddress, gas: 400000, value: web3.toWei("319530", "ether")});
+console.log("RESULT: " + refundTokenMessage);
+var refundToken1Tx = token.reclaimFunds({from: account4, gas: 100000});
 while (txpool.status.pending > 0) {
 }
-printTxData("sendContribution4_1Tx", sendContribution4_1Tx);
-printTxData("sendContribution4_2Tx", sendContribution4_2Tx);
+printTxData("refundToken1Tx", refundToken1Tx);
 printBalances();
-failIfTxStatusError(sendContribution4_1Tx, sendContribution4Message + " - ac7 100 ETH = 100,000 IDH (100 x 1,000)");
-failIfTxStatusError(sendContribution4_2Tx, sendContribution4Message + " - ac8 319,530 ETH = 319,530,000 IDH");
+failIfTxStatusError(refundToken1Tx, refundTokenMessage + " - ac4");
 printTokenContractDetails();
 console.log("RESULT: ");
 
 
 // -----------------------------------------------------------------------------
-// Wait for DATE_ICO_END + COOLDOWN_PERIOD [30 seconds] start
+// Wait for DATE_ICO_END + CLAWBACK_PERIOD [60 seconds]
 // -----------------------------------------------------------------------------
-waitUntil("DATE_ICO_END + COOLDOWN_PERIOD [30 seconds]", token.DATE_ICO_END(), token.COOLDOWN_PERIOD());
+waitUntil("DATE_ICO_END + CLAWBACK_PERIOD [60 seconds]", token.DATE_ICO_END(), token.CLAWBACK_PERIOD());
 
 
 // -----------------------------------------------------------------------------
-var moveTokenMessage = "Move Tokens After Transfers Allowed";
+var ownerClawbackMessage = "Owner Clawback";
 // -----------------------------------------------------------------------------
-console.log("RESULT: " + moveTokenMessage);
-var moveToken1Tx = token.transfer(account6, "1000000", {from: account4, gas: 100000});
-var moveToken2Tx = token.approve(account7,  "30000000", {from: account5, gas: 100000});
+console.log("RESULT: " + ownerClawbackMessage);
+var ownerClawback1Tx = token.ownerClawback({from: contractOwnerAccount, gas: 100000});
 while (txpool.status.pending > 0) {
 }
-var moveToken3Tx = token.transferFrom(account5, account8, "30000000", {from: account7, gas: 100000});
-while (txpool.status.pending > 0) {
-}
-printTxData("moveToken1Tx", moveToken1Tx);
-printTxData("moveToken2Tx", moveToken2Tx);
-printTxData("moveToken3Tx", moveToken3Tx);
+printTxData("ownerClawback1Tx", ownerClawback1Tx);
 printBalances();
-failIfTxStatusError(moveToken1Tx, moveTokenMessage + " - transfer 1 token ac4 -> ac6. CHECK for movement");
-failIfTxStatusError(moveToken2Tx, moveTokenMessage + " - approve 3 token ac5 -> ac7");
-failIfTxStatusError(moveToken3Tx, moveTokenMessage + " - transferFrom 3 token ac5 -> ac8 by ac7. CHECK for movement");
+failIfTxStatusError(ownerClawback1Tx, ownerClawbackMessage);
 printTokenContractDetails();
 console.log("RESULT: ");
 
 
 EOF
-grep "DATA: " $TEST1OUTPUT | sed "s/DATA: //" > $DEPLOYMENTDATA
+grep "DATA: " $TEST2OUTPUT | sed "s/DATA: //" > $DEPLOYMENTDATA
 cat $DEPLOYMENTDATA
-grep "RESULT: " $TEST1OUTPUT | sed "s/RESULT: //" > $TEST1RESULTS
-cat $TEST1RESULTS
+grep "RESULT: " $TEST2OUTPUT | sed "s/RESULT: //" > $TEST2RESULTS
+cat $TEST2RESULTS
