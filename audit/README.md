@@ -6,7 +6,7 @@
 
 Bok Consulting Pty Ltd was commissioned to perform an audit on the indaHash's crowdsale and token Ethereum smart contract.
 
-Commits
+This audit has been conducted on indaHash's source code in commits
 [f787eba](https://github.com/indahash/indaHashToken/commit/f787eba86b9f6d0f51aa4d9601e55a3010cfd5a6) and
 [6183f2b](https://github.com/indahash/indaHashToken/commit/6183f2b02977703fd5bb06a2f28e47b406d6fe21).
 
@@ -42,8 +42,8 @@ Notable features are:
 * 0 value transfers are permitted for `transfer(...)` and `transferFrom(...)`
 * `approve(...)` does not require a non-0 allowance to be set to 0 before being able to modify the non-0 allowance to a different non-0 allowance
 * There is no payload size check on the `transfer(...)` and `transferFrom(...)` functions - this is no longer a recommended feature
-* `transfer(...)` and `transferFrom(...)` have checks that `REVERT` if there is insufficient balance to transfer (or approved), saving the user
-  having to pay the full gas amount allocated for the transaction
+* `transfer(...)` and `transferFrom(...)` have checks that `REVERT` if there is an insufficient token balance to transfer (or approved),
+  saving the user having to pay the full gas amount allocated for the transaction
 
 <br />
 
@@ -60,6 +60,8 @@ Notable features are:
 * [Risks](#risks)
 * [Testing](#testing)
   * [Test 1 Max Contribution](#test-1-max-contribution)
+  * [Test 2 Refunds](#test-2-refunds)
+  * [Test 3 Airdrops](#test-3-airdrops)
 * [Code Review](#code-review)
 
 <br />
@@ -140,7 +142,11 @@ matches the audited source code, and that the deployment parameters are correctl
 
 ## Risks
 
-* Contributed ETH 
+* Contributed ETH will accumulate in the crowdsale contract until the minimum funding goal is reached to support a refund if the minimum
+  funding goal is not reached. During this period the accumulated ETH will be a target for hackers, but there are limited vectors to transfer
+  funds out from this contract. After the minimum funding goal is reach, the ETH balance from the crowdsale contract and any further ETH
+  contributions are immediately transferred to an external crowdsale wallet and this minimises the risk of funds getting stolen or hacked
+  from the bespoke crowdsale / token contract
 
 <br />
 
@@ -176,6 +182,19 @@ in [test/test2results.txt](test/test2results.txt) and the detailed output saved 
 
 <br />
 
+### Test 3 Airdrops
+
+The following functions were tested using the script [test/03_test3.sh](test/03_test3.sh) with the summary results saved
+in [test/test3results.txt](test/test3results.txt) and the detailed output saved in [test/test3output.txt](test/test3output.txt):
+
+* [x] Deploy the crowdsale / token contracts
+* [x] Set up wallets, change tokens/ETH rate
+* [x] `mintMarketing(...)`
+* [x] Contribute to the crowdsale contract in different periods
+* [x] Execute airdrops after crowdsale end
+
+<br />
+
 <hr />
 
 ## Code Review
@@ -190,4 +209,4 @@ in [test/test2results.txt](test/test2results.txt) and the detailed output saved 
 
 <br />
 
-(c) BokkyPooBah / Bok Consulting Pty Ltd for indaHash - Oct 22 2017. The MIT Licence.
+(c) BokkyPooBah / Bok Consulting Pty Ltd for indaHash - Oct 23 2017. The MIT Licence.

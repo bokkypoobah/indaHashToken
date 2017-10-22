@@ -221,11 +221,11 @@ contract IndaHashToken is ERC20Token {
 
   /* ICO dates */
 
-  uint public constant DATE_PRESALE_START = 1508676610; // Sun 22 Oct 2017 12:50:10 UTC
-  uint public constant DATE_PRESALE_END   = 1508676640; // Sun 22 Oct 2017 12:50:40 UTC
+  uint public constant DATE_PRESALE_START = 1508721125; // Mon 23 Oct 2017 01:12:05 UTC
+  uint public constant DATE_PRESALE_END   = 1508721155; // Mon 23 Oct 2017 01:12:35 UTC
 
-  uint public constant DATE_ICO_START = 1508676670; // Sun 22 Oct 2017 12:51:10 UTC
-  uint public constant DATE_ICO_END   = 1508676700; // Sun 22 Oct 2017 12:51:40 UTC
+  uint public constant DATE_ICO_START = 1508721185; // Mon 23 Oct 2017 01:13:05 UTC
+  uint public constant DATE_ICO_END   = 1508721275; // Mon 23 Oct 2017 01:14:35 UTC
 
   /* ICO tokens per ETH */
   
@@ -246,7 +246,7 @@ contract IndaHashToken is ERC20Token {
   uint public constant MIN_CONTRIBUTION = 1 ether / 20; // 0.05 Ether
 
   uint public constant COOLDOWN_PERIOD =  30 seconds;
-  uint public constant CLAWBACK_PERIOD = 60 seconds;
+  uint public constant CLAWBACK_PERIOD = 90 days;
 
   /* Crowdsale variables */
 
