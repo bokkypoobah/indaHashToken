@@ -16,14 +16,11 @@ contract IndaHashTokenTest is IndaHashToken {
 
   function indaHashTokenTest() {}
 
-  function atNow() constant
-    returns (uint)
-  {
+  function atNow() constant returns (uint) {
       return testTime;
   }
 
-  function setTestTime(uint _t) onlyOwner
-  {
+  function setTestTime(uint _t) onlyOwner {
     require( _t > testTime ); // to avoid errors during testing
     testTime = _t;
     TestTimeSet(_t);

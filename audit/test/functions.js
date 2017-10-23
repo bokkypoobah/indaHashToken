@@ -121,10 +121,12 @@ function printTxData(name, txId) {
   var gasPrice = tx.gasPrice;
   var gasCostETH = tx.gasPrice.mul(txReceipt.gasUsed).div(1e18);
   var gasCostUSD = gasCostETH.mul(ethPriceUSD);
+  var block = eth.getBlock(txReceipt.blockNumber);
   console.log("RESULT: " + name + " status=" + txReceipt.status + " gas=" + tx.gas +
       " gasUsed=" + txReceipt.gasUsed + " costETH=" + gasCostETH + " costUSD=" + gasCostUSD +
       " @ ETH/USD=" + ethPriceUSD + " gasPrice=" + gasPrice + " block=" + 
-      txReceipt.blockNumber + " txIx=" + tx.transactionIndex + " txId=" + txId);
+      txReceipt.blockNumber + " txIx=" + tx.transactionIndex + " txId=" + txId +
+      " @ " + block.timestamp + " " + new Date(block.timestamp * 1000).toUTCString());
 }
 
 function assertEtherBalance(account, expectedBalance) {
@@ -254,9 +256,11 @@ function printTokenContractDetails() {
     console.log("RESULT: token.TOKEN_SUPPLY_TOTAL=" + contract.TOKEN_SUPPLY_TOTAL().shift(-decimals));
     console.log("RESULT: token.TOKEN_SUPPLY_ICO=" + contract.TOKEN_SUPPLY_ICO().shift(-decimals));
     console.log("RESULT: token.TOKEN_SUPPLY_MKT=" + contract.TOKEN_SUPPLY_MKT().shift(-decimals));
+    console.log("RESULT: token.PRESALE_ETH_CAP=" + contract.PRESALE_ETH_CAP().shift(-18));
     console.log("RESULT: token.MIN_FUNDING_GOAL=" + contract.MIN_FUNDING_GOAL().shift(-decimals));
 
     console.log("RESULT: token.MIN_CONTRIBUTION=" + contract.MIN_CONTRIBUTION().shift(-18));
+    console.log("RESULT: token.MAX_CONTRIBUTION=" + contract.MAX_CONTRIBUTION().shift(-18));
 
     console.log("RESULT: token.COOLDOWN_PERIOD=" + contract.COOLDOWN_PERIOD());
     console.log("RESULT: token.CLAWBACK_PERIOD=" + contract.CLAWBACK_PERIOD());

@@ -142,14 +142,14 @@ contract ERC20Token is ERC20Interface, Owned {
   /* Transfer the balance from owner's account to another account */
 
   function transfer(address _to, uint _amount) returns (bool success) {
-    // Amount sent cannot exceed balance
+    // amount sent cannot exceed balance
     require( balances[msg.sender] >= _amount );
 
     // update balances
     balances[msg.sender] = balances[msg.sender].sub(_amount);
     balances[_to]        = balances[_to].add(_amount);
 
-    // Log event
+    // log event
     Transfer(msg.sender, _to, _amount);
     return true;
   }
@@ -221,11 +221,11 @@ contract IndaHashToken is ERC20Token {
 
   /* ICO dates */
 
-  uint public constant DATE_PRESALE_START = 1508721125; // Mon 23 Oct 2017 01:12:05 UTC
-  uint public constant DATE_PRESALE_END   = 1508721155; // Mon 23 Oct 2017 01:12:35 UTC
+  uint public constant DATE_PRESALE_START = 1508789800; // Mon 23 Oct 2017 20:16:40 UTC
+  uint public constant DATE_PRESALE_END   = 1508789850; // Mon 23 Oct 2017 20:17:30 UTC
 
-  uint public constant DATE_ICO_START = 1508721185; // Mon 23 Oct 2017 01:13:05 UTC
-  uint public constant DATE_ICO_END   = 1508721275; // Mon 23 Oct 2017 01:14:35 UTC
+  uint public constant DATE_ICO_START = 1508789860; // Mon 23 Oct 2017 20:17:40 UTC
+  uint public constant DATE_ICO_END   = 1508789950; // Mon 23 Oct 2017 20:19:10 UTC
 
   /* ICO tokens per ETH */
   
@@ -241,12 +241,15 @@ contract IndaHashToken is ERC20Token {
   uint public constant TOKEN_SUPPLY_ICO   = 320 * E6 * E6; // 320 mm tokens
   uint public constant TOKEN_SUPPLY_MKT   =  80 * E6 * E6; //  80 mm tokens
 
+  uint public constant PRESALE_ETH_CAP =  500000 ether;
+
   uint public constant MIN_FUNDING_GOAL =  40 * E6 * E6; // 40 mm tokens
   
   uint public constant MIN_CONTRIBUTION = 1 ether / 20; // 0.05 Ether
+  uint public constant MAX_CONTRIBUTION = 500000 ether;
 
   uint public constant COOLDOWN_PERIOD =  30 seconds;
-  uint public constant CLAWBACK_PERIOD = 90 days;
+  uint public constant CLAWBACK_PERIOD = 60 seconds;
 
   /* Crowdsale variables */
 
@@ -347,15 +350,15 @@ contract IndaHashToken is ERC20Token {
   /* Minting of marketing tokens by owner */
 
   function mintMarketing(address _participant, uint _tokens) onlyOwner {
-    // Check amount
+    // check amount
     require( _tokens <= TOKEN_SUPPLY_MKT.sub(tokensIssuedMkt) );
     
-    // Update balances
+    // update balances
     balances[_participant] = balances[_participant].add(_tokens);
     tokensIssuedMkt        = tokensIssuedMkt.add(_tokens);
     tokensIssuedTotal      = tokensIssuedTotal.add(_tokens);
     
-    // Log the miniting
+    // log the miniting
     Transfer(0x0, _participant, _tokens);
     TokensMinted(_participant, _tokens, balances[_participant]);
   }
@@ -384,25 +387,30 @@ contract IndaHashToken is ERC20Token {
     bool isIco = false;
     uint tokens = 0;
     
+    // minimum contribution
     require( msg.value >= MIN_CONTRIBUTION );
+    
+    // one address transfer hard cap
+    require( icoEtherContributed[msg.sender].add(msg.value) <= MAX_CONTRIBUTION );
 
     // check dates for presale or ICO
     if (ts > DATE_PRESALE_START && ts < DATE_PRESALE_END) isPresale = true;  
     if (ts > DATE_ICO_START && ts < DATE_ICO_END) isIco = true;  
     require( isPresale || isIco );
 
+    // presale cap in Ether
+    if (isPresale) require( icoEtherReceived.add(msg.value) <= PRESALE_ETH_CAP );
+    
     // get baseline number of tokens
     tokens = tokensPerEth.mul(msg.value) / 1 ether;
     
     // apply bonuses (none for last week)
     if (isPresale) {
       tokens = tokens.mul(100 + BONUS_PRESALE) / 100;
-    }
-    else if (ts < DATE_ICO_START + 30 seconds) {
+    } else if (ts < DATE_ICO_START + 30 seconds) {
       // first week ico bonus
       tokens = tokens.mul(100 + BONUS_ICO_WEEK_ONE) / 100;
-    }
-    else if (ts < DATE_ICO_START + 60 seconds) {
+    } else if (ts < DATE_ICO_START + 60 seconds) {
       // second week ico bonus
       tokens = tokens.mul(100 + BONUS_ICO_WEEK_TWO) / 100;
     }
@@ -410,17 +418,17 @@ contract IndaHashToken is ERC20Token {
     // ICO token volume cap
     require( tokensIssuedIco.add(tokens) <= TOKEN_SUPPLY_ICO );
 
-    // Register tokens
+    // register tokens
     balances[msg.sender]          = balances[msg.sender].add(tokens);
     icoTokensReceived[msg.sender] = icoTokensReceived[msg.sender].add(tokens);
     tokensIssuedIco               = tokensIssuedIco.add(tokens);
     tokensIssuedTotal             = tokensIssuedTotal.add(tokens);
     
-    // Register Ether
+    // register Ether
     icoEtherReceived                = icoEtherReceived.add(msg.value);
     icoEtherContributed[msg.sender] = icoEtherContributed[msg.sender].add(msg.value);
     
-    // Log token issuance
+    // log token issuance
     Transfer(0x0, msg.sender, tokens);
     TokensIssued(msg.sender, tokens, balances[msg.sender], msg.value);
 
@@ -478,7 +486,7 @@ contract IndaHashToken is ERC20Token {
     // transfer out refund
     msg.sender.transfer(amount);
     
-    //log
+    // log
     Transfer(msg.sender, 0x0, tokens);
     Refund(msg.sender, amount, tokens);
   }
