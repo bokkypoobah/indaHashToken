@@ -503,6 +503,11 @@ contract IndaHashToken is ERC20Token {
     doAirdrop(_participant);
   }
 
+  function adminClaimAirdropMultiple(address[] _addresses) external {
+    require( msg.sender == adminWallet );
+    for (uint i = 0; i < _addresses.length; i++) doAirdrop(_addresses[i]);
+  }  
+  
   function doAirdrop(address _participant) internal {
     uint airdrop = computeAirdrop(_participant);
 
@@ -539,6 +544,15 @@ contract IndaHashToken is ERC20Token {
     uint tokens = icoTokensReceived[_participant];
     uint newBalance = tokens.mul(TOKEN_SUPPLY_ICO) / tokensIssuedIco;
     airdrop = newBalance - tokens;
+  }  
+
+  /* Multiple token transfers from one address to save gas */
+  /* (longer _amounts array not accepted = sanity check) */
+
+  function transferMultiple(address[] _addresses, uint[] _amounts) external {
+    require( isTransferable() );
+    require( _addresses.length == _amounts.length );
+    for (uint i = 0; i < _addresses.length; i++) super.transfer(_addresses[i], _amounts[i]);
   }  
 
 }
