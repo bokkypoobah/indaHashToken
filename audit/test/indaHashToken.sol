@@ -221,11 +221,11 @@ contract IndaHashToken is ERC20Token {
 
   /* ICO dates */
 
-  uint public constant DATE_PRESALE_START = 1508789800; // Mon 23 Oct 2017 20:16:40 UTC
-  uint public constant DATE_PRESALE_END   = 1508789850; // Mon 23 Oct 2017 20:17:30 UTC
+  uint public constant DATE_PRESALE_START = 1508952306; // Wed 25 Oct 2017 17:25:06 UTC
+  uint public constant DATE_PRESALE_END   = 1508952356; // Wed 25 Oct 2017 17:25:56 UTC
 
-  uint public constant DATE_ICO_START = 1508789860; // Mon 23 Oct 2017 20:17:40 UTC
-  uint public constant DATE_ICO_END   = 1508789950; // Mon 23 Oct 2017 20:19:10 UTC
+  uint public constant DATE_ICO_START = 1508952366; // Wed 25 Oct 2017 17:26:06 UTC
+  uint public constant DATE_ICO_END   = 1508952456; // Wed 25 Oct 2017 17:27:36 UTC
 
   /* ICO tokens per ETH */
   
@@ -249,7 +249,7 @@ contract IndaHashToken is ERC20Token {
   uint public constant MAX_CONTRIBUTION = 500000 ether;
 
   uint public constant COOLDOWN_PERIOD =  30 seconds;
-  uint public constant CLAWBACK_PERIOD = 60 seconds;
+  uint public constant CLAWBACK_PERIOD = 90 days;
 
   /* Crowdsale variables */
 
@@ -503,6 +503,11 @@ contract IndaHashToken is ERC20Token {
     doAirdrop(_participant);
   }
 
+  function adminClaimAirdropMultiple(address[] _addresses) external {
+    require( msg.sender == adminWallet );
+    for (uint i = 0; i < _addresses.length; i++) doAirdrop(_addresses[i]);
+  }  
+  
   function doAirdrop(address _participant) internal {
     uint airdrop = computeAirdrop(_participant);
 
@@ -539,6 +544,15 @@ contract IndaHashToken is ERC20Token {
     uint tokens = icoTokensReceived[_participant];
     uint newBalance = tokens.mul(TOKEN_SUPPLY_ICO) / tokensIssuedIco;
     airdrop = newBalance - tokens;
+  }  
+
+  /* Multiple token transfers from one address to save gas */
+  /* (longer _amounts array not accepted = sanity check) */
+
+  function transferMultiple(address[] _addresses, uint[] _amounts) external {
+    require( isTransferable() );
+    require( _addresses.length == _amounts.length );
+    for (uint i = 0; i < _addresses.length; i++) super.transfer(_addresses[i], _amounts[i]);
   }  
 
 }

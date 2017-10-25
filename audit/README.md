@@ -8,8 +8,9 @@ Bok Consulting Pty Ltd was commissioned to perform an audit on the indaHash's cr
 
 This audit has been conducted on indaHash's source code in commits
 [f787eba](https://github.com/indahash/indaHashToken/commit/f787eba86b9f6d0f51aa4d9601e55a3010cfd5a6),
-[6183f2b](https://github.com/indahash/indaHashToken/commit/6183f2b02977703fd5bb06a2f28e47b406d6fe21) and
-[f04260e](https://github.com/indahash/indaHashToken/commit/f04260efe809d55aca72d8441c10ed634e49c5a1).
+[6183f2b](https://github.com/indahash/indaHashToken/commit/6183f2b02977703fd5bb06a2f28e47b406d6fe21),
+[f04260e](https://github.com/indahash/indaHashToken/commit/f04260efe809d55aca72d8441c10ed634e49c5a1) and
+[b2d1e02](https://github.com/indahash/indaHashToken/commit/b2d1e026b3f742ae7bf420a24851eea69fd942d4).
 
 No potential vulnerabilities have been identified in the crowdsale and token contract.
 
@@ -64,6 +65,7 @@ Notable features are:
   * [Test 2 Refunds](#test-2-refunds)
   * [Test 3 Airdrops](#test-3-airdrops)
   * [Test 4 Contribution Limits](#test-4-contribution-limits)
+  * [Test 5 Multiple Airdrop](#test-5-multiple-airdrop)
 * [Code Review](#code-review)
 
 <br />
@@ -206,6 +208,20 @@ in [test/test4results.txt](test/test4results.txt) and the detailed output saved 
 * [x] Set up wallets, change tokens/ETH rate
 * [x] `mintMarketing(...)`
 * [x] Contribute to the crowdsale contract in different periods and confirm contribution limits
+
+<br />
+
+### Test 5 Multiple Airdrop
+
+The following functions were tested using the script [test/05_test5.sh](test/05_test5.sh) with the summary results saved
+in [test/test5results.txt](test/test5results.txt) and the detailed output saved in [test/test5output.txt](test/test5output.txt):
+
+* [x] Deploy the crowdsale / token contracts
+* [x] Set up wallets, change tokens/ETH rate
+* [x] `mintMarketing(...)`
+* [x] Contribute to the crowdsale contract in different periods
+* [x] Execute a multiple airdrop after crowdsale end
+* [x] Execute a multiple transfer
 
 <br />
 
