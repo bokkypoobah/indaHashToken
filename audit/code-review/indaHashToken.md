@@ -153,8 +153,6 @@ contract ERC20Interface {
 //
 // ERC Token Standard #20
 //
-// note that totalSupply() is not defined here
-//
 // ----------------------------------------------------------------------------
 
 // BK Ok

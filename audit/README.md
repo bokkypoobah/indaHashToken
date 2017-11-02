@@ -9,8 +9,9 @@ Bok Consulting Pty Ltd was commissioned to perform an audit on the indaHash's cr
 This audit has been conducted on indaHash's source code in commits
 [f787eba](https://github.com/indahash/indaHashToken/commit/f787eba86b9f6d0f51aa4d9601e55a3010cfd5a6),
 [6183f2b](https://github.com/indahash/indaHashToken/commit/6183f2b02977703fd5bb06a2f28e47b406d6fe21),
-[f04260e](https://github.com/indahash/indaHashToken/commit/f04260efe809d55aca72d8441c10ed634e49c5a1) and
-[b2d1e02](https://github.com/indahash/indaHashToken/commit/b2d1e026b3f742ae7bf420a24851eea69fd942d4).
+[f04260e](https://github.com/indahash/indaHashToken/commit/f04260efe809d55aca72d8441c10ed634e49c5a1),
+[b2d1e02](https://github.com/indahash/indaHashToken/commit/b2d1e026b3f742ae7bf420a24851eea69fd942d4) and
+[1a6ebea](https://github.com/indahash/indaHashToken/commit/1a6ebeaef6605d1a77368b821392e8e7422952bb).
 
 No potential vulnerabilities have been identified in the crowdsale and token contract.
 
@@ -18,7 +19,66 @@ No potential vulnerabilities have been identified in the crowdsale and token con
 
 ### Crowdsale Mainnet Addresses
 
-`TBA`
+The crowdsale contract has been deployed to [0x4895d0fcb5489434fd856f2942d578ea0c1aed15](https://etherscan.io/address/0x4895d0fcb5489434fd856f2942d578ea0c1aed15#code).
+
+The script [scripts/getDeploymentParameters.sh](scripts/getDeploymentParameters.sh) was used to extract the following parameters from the deployed
+contract:
+
+    tokenContractAddress=0x4895d0FCb5489434fD856f2942D578EA0C1aED15
+    token.owner=0xde330092a940d62e2651579217967b6d1d580ee6
+    token.newOwner=0xde330092a940d62e2651579217967b6d1d580ee6
+    token.name=indaHash Coin
+    token.symbol=IDH
+    token.decimals=6
+    token.totalSupply=0
+    token.wallet=0x28e7c414dfa6d3dbe3a53aa2add3aca48707a031
+    token.adminWallet=0xde53123a9798f23e69668cc4ce1e8497a8419e52
+    token.DATE_PRESALE_START=1510151400 Wed, 08 Nov 2017 14:30:00 UTC
+    token.DATE_PRESALE_END=1510758000 Wed, 15 Nov 2017 15:00:00 UTC
+    token.DATE_ICO_START=1511967600 Wed, 29 Nov 2017 15:00:00 UTC
+    token.DATE_ICO_END=1513782000 Wed, 20 Dec 2017 15:00:00 UTC
+    token.tokensPerEth=3200000000
+    token.BONUS_PRESALE=40
+    token.BONUS_ICO_WEEK_ONE=20
+    token.BONUS_ICO_WEEK_TWO=10
+    token.TOKEN_SUPPLY_TOTAL=400000000
+    token.TOKEN_SUPPLY_ICO=320000000
+    token.TOKEN_SUPPLY_MKT=80000000
+    token.PRESALE_ETH_CAP=15000
+    token.MIN_FUNDING_GOAL=40000000
+    token.MIN_CONTRIBUTION=0.05
+    token.MAX_CONTRIBUTION=300
+    token.COOLDOWN_PERIOD=172800
+    token.CLAWBACK_PERIOD=7776000
+    token.icoEtherReceived=0
+    token.tokensIssuedTotal=0
+    token.tokensIssuedIco=0
+    token.tokensIssuedMkt=0
+    token.tokensClaimedAirdrop=0
+    token.icoThresholdReached=false
+    token.isTransferable=false
+    OwnershipTransferred 0 #4481791 {"_from":"0xde53123a9798f23e69668cc4ce1e8497a8419e52","_to":"0xde330092a940d62e2651579217967b6d1d580ee6"}
+    WalletUpdated 0 #4481821 {"_newWallet":"0x28e7c414dfa6d3dbe3a53aa2add3aca48707a031"}
+
+A copy of the verified source code from the deployed contract has been saved to [deployed-contract/IndaHashToken_deployed_at_0x4895d0FCb5489434fD856f2942D578EA0C1aED15.sol](deployed-contract/IndaHashToken_deployed_at_0x4895d0FCb5489434fD856f2942D578EA0C1aED15.sol).
+
+The differences between the deployed contract and the audited contract source code are:
+
+    $ diff -w IndaHashToken_deployed_at_0x4895d0FCb5489434fD856f2942D578EA0C1aED15.sol ../../contracts/indaHashToken.sol 
+    222c222
+    <   uint public constant DATE_PRESALE_START = 1510151400; // 08-Nov-2017 14:30 UTC
+    ---
+    >   uint public constant DATE_PRESALE_START = 1510153200; // 08-Nov-2017 15:00 UTC
+    242c242
+    <   uint public constant PRESALE_ETH_CAP =  15000 ether;
+    ---
+    >   uint public constant PRESALE_ETH_CAP =  10000 ether;
+
+* The wallet address [0x28e7c414dfa6d3dbe3a53aa2add3aca48707a031](https://etherscan.io/address/0x28e7c414dfa6d3dbe3a53aa2add3aca48707a031) has not
+  had any transactions. It would be prudent to test this address by transferring some ETH into, and then moving the ETH back out.
+
+* The crowdsale/token contract has been deployed using unoptimised compilation to bytecode. The gas cost for executing functions may be slightly
+  higher for unoptimised code compared to optimised code.
 
 <br />
 
@@ -239,4 +299,4 @@ in [test/test5results.txt](test/test5results.txt) and the detailed output saved 
 
 <br />
 
-(c) BokkyPooBah / Bok Consulting Pty Ltd for indaHash - Oct 23 2017. The MIT Licence.
+(c) BokkyPooBah / Bok Consulting Pty Ltd for indaHash - Nov 6 2017. The MIT Licence.

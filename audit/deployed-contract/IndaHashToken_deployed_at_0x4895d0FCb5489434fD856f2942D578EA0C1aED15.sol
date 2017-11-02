@@ -219,7 +219,7 @@ contract IndaHashToken is ERC20Token {
 
   /* ICO dates */
 
-  uint public constant DATE_PRESALE_START = 1510153200; // 08-Nov-2017 15:00 UTC
+  uint public constant DATE_PRESALE_START = 1510151400; // 08-Nov-2017 14:30 UTC
   uint public constant DATE_PRESALE_END   = 1510758000; // 15-Nov-2017 15:00 UTC
 
   uint public constant DATE_ICO_START = 1511967600; // 29-Nov-2017 15:00 UTC
@@ -239,7 +239,7 @@ contract IndaHashToken is ERC20Token {
   uint public constant TOKEN_SUPPLY_ICO   = 320 * E6 * E6; // 320 mm tokens
   uint public constant TOKEN_SUPPLY_MKT   =  80 * E6 * E6; //  80 mm tokens
 
-  uint public constant PRESALE_ETH_CAP =  10000 ether;
+  uint public constant PRESALE_ETH_CAP =  15000 ether;
 
   uint public constant MIN_FUNDING_GOAL =  40 * E6 * E6; // 40 mm tokens
   
