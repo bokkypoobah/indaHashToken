@@ -239,11 +239,11 @@ contract IndaHashToken is ERC20Token {
   uint public constant TOKEN_SUPPLY_ICO   = 320 * E6 * E6; // 320 mm tokens
   uint public constant TOKEN_SUPPLY_MKT   =  80 * E6 * E6; //  80 mm tokens
 
-  uint public constant PRESALE_ETH_CAP =  10000 ether;
+  uint public constant PRESALE_ETH_CAP =  15000 ether;
 
   uint public constant MIN_FUNDING_GOAL =  40 * E6 * E6; // 40 mm tokens
   
-  uint public constant MIN_CONTRIBUTION = 1 ether / 20; // 0.05 Ether
+  uint public constant MIN_CONTRIBUTION = 1 ether / 2; // 0.5 Ether
   uint public constant MAX_CONTRIBUTION = 300 ether;
 
   uint public constant COOLDOWN_PERIOD =  2 days;
@@ -258,18 +258,23 @@ contract IndaHashToken is ERC20Token {
   
   uint public tokensClaimedAirdrop = 0;
   
-  /* Keep track of Ether contributed and tokens received during Crowdsale */
+  /* Keep track of Ether contributed and tokens received during Crowdsale, */
+  /* minting and airdrop (these tokens are initially locked) */
   
   mapping(address => uint) public icoEtherContributed;
   mapping(address => uint) public icoTokensReceived;
-
+  mapping(address => uint) public mktTokensReceived;
+  mapping(address => uint) public airTokensReceived;
+  
   /* Keep track of participants who 
   /* - have received their airdropped tokens after a successful ICO */
-  /* - or have reclaimed their contributions in case of fialed Crowdsale */
+  /* - or have reclaimed their contributions in case of failed Crowdsale */
+  /* - have passed KYC */
   
   mapping(address => bool) public airdropClaimed;
   mapping(address => bool) public refundClaimed;
-
+  mapping(address => bool) public whitelist;
+  
   // Events ---------------------------
   
   event WalletUpdated(address _newWallet);
@@ -279,6 +284,7 @@ contract IndaHashToken is ERC20Token {
   event TokensIssued(address indexed _owner, uint _tokens, uint _balance, uint _etherContributed);
   event Refund(address indexed _owner, uint _amount, uint _tokens);
   event Airdrop(address indexed _owner, uint _amount, uint _balance);
+  event WhitelistUpdated(address indexed _participant, bool _status);
 
   // Basic Functions ------------------
 
@@ -318,7 +324,25 @@ contract IndaHashToken is ERC20Token {
      if ( atNow() < DATE_ICO_END + COOLDOWN_PERIOD ) return false;
      return true;
   }
-  
+
+  // Whitelist functions ------
+
+  /* Manage whitelist */
+
+  function addToWhitelist(address _participant) {
+    require( msg.sender == adminWallet || msg.sender == owner );
+    whitelist[_participant] = true;
+    WhitelistUpdated(_participant, true);
+  }
+
+  function addToWhitelistMultiple(address[] _participants) {
+    require( msg.sender == adminWallet || msg.sender == owner );
+    for (uint i = 0; i < _participants.length; i++) {
+      whitelist[_participants[i]] = true;
+      WhitelistUpdated(_participants[i], true);      
+    }
+  }
+
   // Owner Functions ------------------
   
   /* Change the crowdsale wallet address */
@@ -355,6 +379,7 @@ contract IndaHashToken is ERC20Token {
     balances[_participant] = balances[_participant].add(_tokens);
     tokensIssuedMkt        = tokensIssuedMkt.add(_tokens);
     tokensIssuedTotal      = tokensIssuedTotal.add(_tokens);
+    mktTokensReceived[_participant] = mktTokensReceived[_participant].add(_tokens);
     
     // log the miniting
     Transfer(0x0, _participant, _tokens);
@@ -439,15 +464,32 @@ contract IndaHashToken is ERC20Token {
   /* Override "transfer" (ERC20) */
 
   function transfer(address _to, uint _amount) returns (bool success) {
-    require( isTransferable() );
+    require( transferCheck(msg.sender, _amount) );
     return super.transfer(_to, _amount);
   }
   
   /* Override "transferFrom" (ERC20) */
 
   function transferFrom(address _from, address _to, uint _amount) returns (bool success) {
-    require( isTransferable() );
+    require( transferCheck(_from, _amount) );
     return super.transferFrom(_from, _to, _amount);
+  }
+  
+  /* Helper function to check if a transfer is possible */
+
+  function transferCheck(address _from, uint _amount) public constant returns (bool success) {
+    // no transfers possible if not transferable
+    if(!isTransferable()) return false;
+    
+    // whitelisted - ok
+    if (whitelist[_from]) return true;
+    
+    // transferable but not whitelisted: only unlocked tokens can be transferred
+    uint lockedBalance = icoTokensReceived[_from];
+    lockedBalance = lockedBalance.add(mktTokensReceived[_from]);
+    lockedBalance = lockedBalance.add(airTokensReceived[_from]);
+    if (balances[_from].sub(_amount) >= lockedBalance) return true;
+    return false;
   }
 
   // External functions ---------------
@@ -516,6 +558,7 @@ contract IndaHashToken is ERC20Token {
     balances[_participant] = balances[_participant].add(airdrop);
     tokensIssuedTotal      = tokensIssuedTotal.add(airdrop);
     tokensClaimedAirdrop   = tokensClaimedAirdrop.add(airdrop);
+    airTokensReceived[_participant] = airdrop;
     
     // log
     Airdrop(_participant, airdrop, balances[_participant]);
@@ -527,7 +570,7 @@ contract IndaHashToken is ERC20Token {
   
   /* If an account has tokens from the ico, the amount after the airdrop */
   /* will be newBalance = tokens * TOKEN_SUPPLY_ICO / tokensIssuedIco */
-      
+
   function computeAirdrop(address _participant) constant returns (uint airdrop) {
     // return 0 if it's too early or ico was not successful
     if ( atNow() < DATE_ICO_END || !icoThresholdReached() ) return 0;
@@ -548,9 +591,11 @@ contract IndaHashToken is ERC20Token {
   /* (longer _amounts array not accepted = sanity check) */
 
   function transferMultiple(address[] _addresses, uint[] _amounts) external {
-    require( isTransferable() );
     require( _addresses.length == _amounts.length );
-    for (uint i = 0; i < _addresses.length; i++) super.transfer(_addresses[i], _amounts[i]);
+    for (uint i = 0; i < _addresses.length; i++) {
+      require( transferCheck(msg.sender, _amounts[i]) );
+      super.transfer(_addresses[i], _amounts[i]);
+    }
   }  
 
 }
