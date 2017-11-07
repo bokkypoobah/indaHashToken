@@ -318,13 +318,13 @@ contract IndaHashToken is ERC20Token {
   uint public constant TOKEN_SUPPLY_ICO   = 320 * E6 * E6; // 320 mm tokens
   uint public constant TOKEN_SUPPLY_MKT   =  80 * E6 * E6; //  80 mm tokens
 
-  uint public constant PRESALE_ETH_CAP =  10000 ether;
+  uint public constant PRESALE_ETH_CAP =  15000 ether;
 
   // BK Ok
   uint public constant MIN_FUNDING_GOAL =  40 * E6 * E6; // 40 mm tokens
   
   // BK Ok
-  uint public constant MIN_CONTRIBUTION = 1 ether / 20; // 0.05 Ether
+  uint public constant MIN_CONTRIBUTION = 1 ether / 2; // 0.5 Ether
   // BK Ok
   uint public constant MAX_CONTRIBUTION = 300 ether;
 
@@ -344,19 +344,24 @@ contract IndaHashToken is ERC20Token {
   // BK Ok
   uint public tokensClaimedAirdrop = 0;
   
-  /* Keep track of Ether contributed and tokens received during Crowdsale */
+  /* Keep track of Ether contributed and tokens received during Crowdsale, */
+  /* minting and airdrop (these tokens are initially locked) */
   
   // BK Next 2 Ok
   mapping(address => uint) public icoEtherContributed;
   mapping(address => uint) public icoTokensReceived;
+  mapping(address => uint) public mktTokensReceived;
+  mapping(address => uint) public airTokensReceived;
 
   /* Keep track of participants who 
   /* - have received their airdropped tokens after a successful ICO */
-  /* - or have reclaimed their contributions in case of fialed Crowdsale */
+  /* - or have reclaimed their contributions in case of failed Crowdsale */
+  /* - have passed KYC */
   
   // BK Next 2 Ok
   mapping(address => bool) public airdropClaimed;
   mapping(address => bool) public refundClaimed;
+  mapping(address => bool) public whitelist;
 
   // Events ---------------------------
   
@@ -368,6 +373,7 @@ contract IndaHashToken is ERC20Token {
   event TokensIssued(address indexed _owner, uint _tokens, uint _balance, uint _etherContributed);
   event Refund(address indexed _owner, uint _amount, uint _tokens);
   event Airdrop(address indexed _owner, uint _amount, uint _balance);
+  event WhitelistUpdated(address indexed _participant, bool _status);
 
   // Basic Functions ------------------
 
@@ -422,6 +428,24 @@ contract IndaHashToken is ERC20Token {
      return true;
   }
   
+  // Whitelist functions ------
+
+  /* Manage whitelist */
+
+  function addToWhitelist(address _participant) {
+    require( msg.sender == adminWallet || msg.sender == owner );
+    whitelist[_participant] = true;
+    WhitelistUpdated(_participant, true);
+  }
+
+  function addToWhitelistMultiple(address[] _participants) {
+    require( msg.sender == adminWallet || msg.sender == owner );
+    for (uint i = 0; i < _participants.length; i++) {
+      whitelist[_participants[i]] = true;
+      WhitelistUpdated(_participants[i], true);      
+    }
+  }
+
   // Owner Functions ------------------
   
   /* Change the crowdsale wallet address */
@@ -473,6 +497,7 @@ contract IndaHashToken is ERC20Token {
     balances[_participant] = balances[_participant].add(_tokens);
     tokensIssuedMkt        = tokensIssuedMkt.add(_tokens);
     tokensIssuedTotal      = tokensIssuedTotal.add(_tokens);
+    mktTokensReceived[_participant] = mktTokensReceived[_participant].add(_tokens);
     
     // log the miniting
     // BK Next 2 Ok - Log events
@@ -585,8 +610,7 @@ contract IndaHashToken is ERC20Token {
 
   // BK Ok
   function transfer(address _to, uint _amount) returns (bool success) {
-    // BK Ok
-    require( isTransferable() );
+    require( transferCheck(msg.sender, _amount) );
     // BK Ok
     return super.transfer(_to, _amount);
   }
@@ -595,10 +619,26 @@ contract IndaHashToken is ERC20Token {
 
   // BK Ok
   function transferFrom(address _from, address _to, uint _amount) returns (bool success) {
-    // BK Ok
-    require( isTransferable() );
+    require( transferCheck(_from, _amount) );
     // BK Ok
     return super.transferFrom(_from, _to, _amount);
+  }
+
+  /* Helper function to check if a transfer is possible */
+
+  function transferCheck(address _from, uint _amount) public constant returns (bool success) {
+    // no transfers possible if not transferable
+    if(!isTransferable()) return false;
+    
+    // whitelisted - ok
+    if (whitelist[_from]) return true;
+    
+    // transferable but not whitelisted: only unlocked tokens can be transferred
+    uint lockedBalance = icoTokensReceived[_from];
+    lockedBalance = lockedBalance.add(mktTokensReceived[_from]);
+    lockedBalance = lockedBalance.add(airTokensReceived[_from]);
+    if (balances[_from].sub(_amount) >= lockedBalance) return true;
+    return false;
   }
 
   // External functions ---------------
@@ -689,6 +729,7 @@ contract IndaHashToken is ERC20Token {
     balances[_participant] = balances[_participant].add(airdrop);
     tokensIssuedTotal      = tokensIssuedTotal.add(airdrop);
     tokensClaimedAirdrop   = tokensClaimedAirdrop.add(airdrop);
+    airTokensReceived[_participant] = airdrop;
     
     // log
     // BK Next 2 Ok - Log event
@@ -731,11 +772,14 @@ contract IndaHashToken is ERC20Token {
   // BK Ok - Anyone can call this
   function transferMultiple(address[] _addresses, uint[] _amounts) external {
     // BK Ok
-    require( isTransferable() );
-    // BK Ok
     require( _addresses.length == _amounts.length );
     // BK Ok
-    for (uint i = 0; i < _addresses.length; i++) super.transfer(_addresses[i], _amounts[i]);
+    for (uint i = 0; i < _addresses.length; i++) {
+      // BK Ok
+      require( transferCheck(msg.sender, _amounts[i]) );
+      // BK Ok
+      super.transfer(_addresses[i], _amounts[i]);
+    }
   }  
 
 }
