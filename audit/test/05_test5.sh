@@ -249,6 +249,21 @@ console.log("RESULT: ");
 
 
 // -----------------------------------------------------------------------------
+var unlockTokenMessage = "Unlock Tokens";
+var removeLockAccounts = [account4, account8, account9, account10];
+// -----------------------------------------------------------------------------
+console.log("RESULT: " + unlockTokenMessage);
+var unlockToken1Tx = token.removeLockMultiple(removeLockAccounts, {from: adminWallet, gas: 100000});
+while (txpool.status.pending > 0) {
+}
+printTxData("unlockToken1Tx", unlockToken1Tx);
+printBalances();
+failIfTxStatusError(unlockToken1Tx, unlockTokenMessage + " - ac4, ac8, ac9, ac10");
+printTokenContractDetails();
+console.log("RESULT: ");
+
+
+// -----------------------------------------------------------------------------
 // Wait for DATE_ICO_END + COOLDOWN_PERIOD [30 seconds] start
 // -----------------------------------------------------------------------------
 waitUntil("DATE_ICO_END + COOLDOWN_PERIOD [30 seconds]", token.DATE_ICO_END(), token.COOLDOWN_PERIOD());

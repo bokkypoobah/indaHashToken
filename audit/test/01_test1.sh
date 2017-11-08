@@ -231,6 +231,29 @@ console.log("RESULT: ");
 
 
 // -----------------------------------------------------------------------------
+var unlockTokenMessage = "Unlock Tokens";
+// -----------------------------------------------------------------------------
+console.log("RESULT: " + unlockTokenMessage);
+var unlockToken1Tx = token.removeLock(account4, {from: adminWallet, gas: 100000});
+var unlockToken2Tx = token.removeLock(account5, {from: adminWallet, gas: 100000});
+var unlockToken3Tx = token.removeLock(account6, {from: adminWallet, gas: 100000});
+var unlockToken4Tx = token.removeLock(account8, {from: adminWallet, gas: 100000});
+while (txpool.status.pending > 0) {
+}
+printTxData("unlockToken1Tx", unlockToken1Tx);
+printTxData("unlockToken2Tx", unlockToken2Tx);
+printTxData("unlockToken3Tx", unlockToken3Tx);
+printTxData("unlockToken4Tx", unlockToken4Tx);
+printBalances();
+failIfTxStatusError(unlockToken1Tx, unlockTokenMessage + " - ac4");
+failIfTxStatusError(unlockToken2Tx, unlockTokenMessage + " - ac5");
+failIfTxStatusError(unlockToken3Tx, unlockTokenMessage + " - ac6");
+failIfTxStatusError(unlockToken4Tx, unlockTokenMessage + " - ac8");
+printTokenContractDetails();
+console.log("RESULT: ");
+
+
+// -----------------------------------------------------------------------------
 // Wait for DATE_ICO_END + COOLDOWN_PERIOD [30 seconds] start
 // -----------------------------------------------------------------------------
 waitUntil("DATE_ICO_END + COOLDOWN_PERIOD [30 seconds]", token.DATE_ICO_END(), token.COOLDOWN_PERIOD());

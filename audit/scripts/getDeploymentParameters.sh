@@ -4,8 +4,8 @@ geth attach << EOF | grep "RESULT: " | sed "s/RESULT: //"
 
 loadScript("abi.js");
 
-var tokenContractAddress = "0x4895d0FCb5489434fD856f2942D578EA0C1aED15";
-var tokenFromBlock = 4481708 ;
+var tokenContractAddress = "0x5136c98a80811c3f46bdda8b5c4555cfd9f812f0";
+var tokenFromBlock = 4513481;
 
 function printTokenContractDetails() {
   console.log("RESULT: tokenContractAddress=" + tokenContractAddress);

@@ -8,41 +8,37 @@ DEPLOYMENTDATA     = 'deploymentData.txt'
 INCLUDEJS          = './include.js'
 TEST3OUTPUT        = 'test3output.txt'
 TEST3RESULTS       = 'test3results.txt'
-CURRENTTIME        = '1508951894' 'Wed 25 Oct 2017 17:18:14 UTC'
-DATE_PRESALE_START = '1508952014' 'Wed 25 Oct 2017 17:20:14 UTC'
-DATE_PRESALE_END   = '1508952064' 'Wed 25 Oct 2017 17:21:04 UTC'
-DATE_ICO_START     = '1508952074' 'Wed 25 Oct 2017 17:21:14 UTC'
-DATE_ICO_END       = '1508952164' 'Wed 25 Oct 2017 17:22:44 UTC'
+CURRENTTIME        = '1510133774' 'Wed  8 Nov 2017 09:36:14 UTC'
+DATE_PRESALE_START = '1510133894' 'Wed  8 Nov 2017 09:38:14 UTC'
+DATE_PRESALE_END   = '1510133944' 'Wed  8 Nov 2017 09:39:04 UTC'
+DATE_ICO_START     = '1510133954' 'Wed  8 Nov 2017 09:39:14 UTC'
+DATE_ICO_END       = '1510134044' 'Wed  8 Nov 2017 09:40:44 UTC'
 --- Differences ../../contracts/indaHashToken.sol indaHashToken.sol ---
-224,225c224,225
+222,223c222,223
 <   uint public constant DATE_PRESALE_START = 1510153200; // 08-Nov-2017 15:00 UTC
 <   uint public constant DATE_PRESALE_END   = 1510758000; // 15-Nov-2017 15:00 UTC
 ---
->   uint public constant DATE_PRESALE_START = 1508952014; // Wed 25 Oct 2017 17:20:14 UTC
->   uint public constant DATE_PRESALE_END   = 1508952064; // Wed 25 Oct 2017 17:21:04 UTC
-227,228c227,228
+>   uint public constant DATE_PRESALE_START = 1510133894; // Wed  8 Nov 2017 09:38:14 UTC
+>   uint public constant DATE_PRESALE_END   = 1510133944; // Wed  8 Nov 2017 09:39:04 UTC
+225,226c225,226
 <   uint public constant DATE_ICO_START = 1511967600; // 29-Nov-2017 15:00 UTC
 <   uint public constant DATE_ICO_END   = 1513782000; // 20-Dec-2017 15:00 UTC
 ---
->   uint public constant DATE_ICO_START = 1508952074; // Wed 25 Oct 2017 17:21:14 UTC
->   uint public constant DATE_ICO_END   = 1508952164; // Wed 25 Oct 2017 17:22:44 UTC
-244c244
-<   uint public constant PRESALE_ETH_CAP =  10000 ether;
----
->   uint public constant PRESALE_ETH_CAP =  500000 ether;
-249c249
+>   uint public constant DATE_ICO_START = 1510133954; // Wed  8 Nov 2017 09:39:14 UTC
+>   uint public constant DATE_ICO_END   = 1510134044; // Wed  8 Nov 2017 09:40:44 UTC
+247c247
 <   uint public constant MAX_CONTRIBUTION = 300 ether;
 ---
 >   uint public constant MAX_CONTRIBUTION = 500000 ether;
-251c251
+249c249
 <   uint public constant COOLDOWN_PERIOD =  2 days;
 ---
 >   uint public constant COOLDOWN_PERIOD =  30 seconds;
-410c410
+432c432
 <     } else if (ts < DATE_ICO_START + 7 days) {
 ---
 >     } else if (ts < DATE_ICO_START + 30 seconds) {
-413c413
+435c435
 <     } else if (ts < DATE_ICO_START + 14 days) {
 ---
 >     } else if (ts < DATE_ICO_START + 60 seconds) {
@@ -52,7 +48,7 @@ Welcome to the Geth JavaScript console!
 
 instance: Geth/v1.7.2-stable-1db4ecdc/darwin-amd64/go1.9
 coinbase: 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e
-at block: 483 (Thu, 26 Oct 2017 04:18:12 AEDT)
+at block: 1088 (Wed, 08 Nov 2017 20:36:09 AEDT)
  datadir: /Users/bok/Projects/indaHashTokenContractAudit/audit/test/testchain
  modules: admin:1.0 debug:1.0 eth:1.0 miner:1.0 net:1.0 personal:1.0 rpc:1.0 txpool:1.0 web3:1.0
 
@@ -76,7 +72,7 @@ undefined
 > 
 RESULT:  # Account                                             EtherBalanceChange              Token Name
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
-RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       21.000000000000000000           0.000000 Account #0 - Miner
+RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e        9.000000000000000000           0.000000 Account #0 - Miner
 RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433        0.000000000000000000           0.000000 Account #1 - Contract Owner
 RESULT:  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976        0.000000000000000000           0.000000 Account #2 - Wallet
 RESULT:  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000 Account #3 - Admin Wallet
@@ -138,14 +134,14 @@ undefined
 undefined
 > 
 > 
-DATA: tokenAddress=0x4590d6158ef2de082c74f10c219bc8daeba3235c
-RESULT: tokenAddress=0x4590d6158ef2de082c74f10c219bc8daeba3235c status=0x1 gas=6000000 gasUsed=2322244 costETH=0.041800392 costUSD=12.964266177624 @ ETH/USD=310.147 gasPrice=18000000000 block=492 txIx=0 txId=0x2c5ca90a48a73aee19d143011231ee0d9feb6c62eef730a32e84cb4a7e2c2ad7 @ 1508951924 Wed, 25 Oct 2017 17:18:44 UTC
+DATA: tokenAddress=0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e
+RESULT: tokenAddress=0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e status=0x1 gas=6000000 gasUsed=2556145 costETH=0.04601061 costUSD=14.27005265967 @ ETH/USD=310.147 gasPrice=18000000000 block=1093 txIx=0 txId=0xe630ea372e051f8b8c32d0550d1afbaf378bb5f83cd935cba75692f396094d83 @ 1510133805 Wed, 08 Nov 2017 09:36:45 UTC
 undefined
 > 
 RESULT:  # Account                                             EtherBalanceChange              Token Name
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
-RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       27.041800392000000000           0.000000 Account #0 - Miner
-RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.041800392000000000           0.000000 Account #1 - Contract Owner
+RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       15.046010610000000000           0.000000 Account #0 - Miner
+RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.046010610000000000           0.000000 Account #1 - Contract Owner
 RESULT:  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976        0.000000000000000000           0.000000 Account #2 - Wallet
 RESULT:  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000 Account #3 - Admin Wallet
 RESULT:  4 0xa44a08d3f6933c69212114bb66e2df1813651844        0.000000000000000000           0.000000 Account #4
@@ -157,7 +153,7 @@ RESULT:  9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.00000000000000000
 RESULT: 10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000 Account #10
 RESULT: 11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000           0.000000 Account #11 - Marketing 1
 RESULT: 12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000           0.000000 Account #12 - Marketing 2
-RESULT: 13 0x4590d6158ef2de082c74f10c219bc8daeba3235c        0.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
+RESULT: 13 0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e        0.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
 RESULT:                                                                                     0.000000 Total Token Balances
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
@@ -167,7 +163,7 @@ undefined
 RESULT: PASS Deploy Crowdsale/Token Contract
 1
 > 
-RESULT: tokenContractAddress=0x4590d6158ef2de082c74f10c219bc8daeba3235c
+RESULT: tokenContractAddress=0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e
 RESULT: token.owner=0xa11aae29840fbb5c86e6fd4cf809eba183aef433
 RESULT: token.newOwner=0x0000000000000000000000000000000000000000
 RESULT: token.name=indaHash Coin
@@ -176,10 +172,10 @@ RESULT: token.decimals=6
 RESULT: token.totalSupply=0
 RESULT: token.wallet=0xa11aae29840fbb5c86e6fd4cf809eba183aef433
 RESULT: token.adminWallet=0xa11aae29840fbb5c86e6fd4cf809eba183aef433
-RESULT: token.DATE_PRESALE_START=1508952014 Wed, 25 Oct 2017 17:20:14 UTC
-RESULT: token.DATE_PRESALE_END=1508952064 Wed, 25 Oct 2017 17:21:04 UTC
-RESULT: token.DATE_ICO_START=1508952074 Wed, 25 Oct 2017 17:21:14 UTC
-RESULT: token.DATE_ICO_END=1508952164 Wed, 25 Oct 2017 17:22:44 UTC
+RESULT: token.DATE_PRESALE_START=1510133894 Wed, 08 Nov 2017 09:38:14 UTC
+RESULT: token.DATE_PRESALE_END=1510133944 Wed, 08 Nov 2017 09:39:04 UTC
+RESULT: token.DATE_ICO_START=1510133954 Wed, 08 Nov 2017 09:39:14 UTC
+RESULT: token.DATE_ICO_END=1510134044 Wed, 08 Nov 2017 09:40:44 UTC
 RESULT: token.tokensPerEth=3200000000
 RESULT: token.BONUS_PRESALE=40
 RESULT: token.BONUS_ICO_WEEK_ONE=20
@@ -187,9 +183,9 @@ RESULT: token.BONUS_ICO_WEEK_TWO=10
 RESULT: token.TOKEN_SUPPLY_TOTAL=400000000
 RESULT: token.TOKEN_SUPPLY_ICO=320000000
 RESULT: token.TOKEN_SUPPLY_MKT=80000000
-RESULT: token.PRESALE_ETH_CAP=500000
+RESULT: token.PRESALE_ETH_CAP=15000
 RESULT: token.MIN_FUNDING_GOAL=40000000
-RESULT: token.MIN_CONTRIBUTION=0.05
+RESULT: token.MIN_CONTRIBUTION=0.5
 RESULT: token.MAX_CONTRIBUTION=500000
 RESULT: token.COOLDOWN_PERIOD=30
 RESULT: token.CLAWBACK_PERIOD=7776000
@@ -231,25 +227,25 @@ undefined
 ... 
 undefined
 > 
-RESULT: setup1Tx status=0x1 gas=400000 gasUsed=30347 costETH=0.000546246 costUSD=0.169416558162 @ ETH/USD=310.147 gasPrice=18000000000 block=495 txIx=0 txId=0xfe3a8755dacff9299ec27d06ed8b64b553133d60116a8bb7a4f90a0238846ee4 @ 1508951931 Wed, 25 Oct 2017 17:18:51 UTC
+RESULT: setup1Tx status=0x1 gas=400000 gasUsed=30391 costETH=0.000547038 costUSD=0.169662194586 @ ETH/USD=310.147 gasPrice=18000000000 block=1096 txIx=0 txId=0xed4b428f9e63832fce7e461e96b31834a3881b458360aba9480dbd72ebb3dc0e @ 1510133817 Wed, 08 Nov 2017 09:36:57 UTC
 undefined
 > 
-RESULT: setup2Tx status=0x1 gas=400000 gasUsed=29489 costETH=0.000530802 costUSD=0.164626647894 @ ETH/USD=310.147 gasPrice=18000000000 block=495 txIx=1 txId=0x66509affc5b82e6519596d3464ca80b087eb7c044db014efe2f03f5a7cf81b29 @ 1508951931 Wed, 25 Oct 2017 17:18:51 UTC
+RESULT: setup2Tx status=0x1 gas=400000 gasUsed=29489 costETH=0.000530802 costUSD=0.164626647894 @ ETH/USD=310.147 gasPrice=18000000000 block=1097 txIx=0 txId=0x30bf1fec9bbaf593473c6ef6e6c246b9a2ada0e8437e7fc19c69dee7e17e70b3 @ 1510133819 Wed, 08 Nov 2017 09:36:59 UTC
 undefined
 > 
-RESULT: setup3Tx status=0x1 gas=400000 gasUsed=28661 costETH=0.000515898 costUSD=0.160004217006 @ ETH/USD=310.147 gasPrice=18000000000 block=495 txIx=2 txId=0xf4537dba36adcb4d3b2ba2f05d89c1ae8be46285073d1440c96bcd10f5dbf209 @ 1508951931 Wed, 25 Oct 2017 17:18:51 UTC
+RESULT: setup3Tx status=0x1 gas=400000 gasUsed=28683 costETH=0.000516294 costUSD=0.160127035218 @ ETH/USD=310.147 gasPrice=18000000000 block=1097 txIx=1 txId=0x257d6447c1a0172ece7d01ee1018b617b3bb8189add6a47751b30003d794fefc @ 1510133819 Wed, 08 Nov 2017 09:36:59 UTC
 undefined
 > 
-RESULT: setup4Tx status=0x1 gas=400000 gasUsed=88486 costETH=0.001592748 costUSD=0.493986013956 @ ETH/USD=310.147 gasPrice=18000000000 block=495 txIx=3 txId=0xbd248a127c22243330f53aa97e517496e20dfa399b266bd06a7875ee1e03d92c @ 1508951931 Wed, 25 Oct 2017 17:18:51 UTC
+RESULT: setup4Tx status=0x1 gas=400000 gasUsed=108651 costETH=0.001955718 costUSD=0.606560070546 @ ETH/USD=310.147 gasPrice=18000000000 block=1097 txIx=2 txId=0xf3851b4c57ce31a32847d546114780d3482df6989548fb4d60ba1cf270b49798 @ 1510133819 Wed, 08 Nov 2017 09:36:59 UTC
 undefined
 > 
-RESULT: setup5Tx status=0x1 gas=400000 gasUsed=58486 costETH=0.001052748 costUSD=0.326506633956 @ ETH/USD=310.147 gasPrice=18000000000 block=495 txIx=4 txId=0x97a014b2705a057755f0328faac59dc1b24f62a69469daec1836dec07ee2cfea @ 1508951931 Wed, 25 Oct 2017 17:18:51 UTC
+RESULT: setup5Tx status=0x1 gas=400000 gasUsed=78651 costETH=0.001415718 costUSD=0.439080690546 @ ETH/USD=310.147 gasPrice=18000000000 block=1097 txIx=3 txId=0xbe5b39998914250771c75026c4fe9db47c892d9094b335b2a2ab59d0fc087f69 @ 1510133819 Wed, 08 Nov 2017 09:36:59 UTC
 undefined
 > 
 RESULT:  # Account                                             EtherBalanceChange              Token Name
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
-RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       36.046038834000000000           0.000000 Account #0 - Miner
-RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.046038834000000000           0.000000 Account #1 - Contract Owner
+RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       27.050976180000000000           0.000000 Account #0 - Miner
+RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.050976180000000000           0.000000 Account #1 - Contract Owner
 RESULT:  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976        0.000000000000000000           0.000000 Account #2 - Wallet
 RESULT:  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000 Account #3 - Admin Wallet
 RESULT:  4 0xa44a08d3f6933c69212114bb66e2df1813651844        0.000000000000000000           0.000000 Account #4
@@ -261,7 +257,7 @@ RESULT:  9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.00000000000000000
 RESULT: 10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000 Account #10
 RESULT: 11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000    30000000.000000 Account #11 - Marketing 1
 RESULT: 12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000    50000000.000000 Account #12 - Marketing 2
-RESULT: 13 0x4590d6158ef2de082c74f10c219bc8daeba3235c        0.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
+RESULT: 13 0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e        0.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
 RESULT:                                                                              80000000.000000 Total Token Balances
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
@@ -283,7 +279,7 @@ RESULT: PASS Setup - mintMarketing(marketing1)
 RESULT: PASS Setup - mintMarketing(marketing2)
 1
 > 
-RESULT: tokenContractAddress=0x4590d6158ef2de082c74f10c219bc8daeba3235c
+RESULT: tokenContractAddress=0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e
 RESULT: token.owner=0xa11aae29840fbb5c86e6fd4cf809eba183aef433
 RESULT: token.newOwner=0x0000000000000000000000000000000000000000
 RESULT: token.name=indaHash Coin
@@ -292,10 +288,10 @@ RESULT: token.decimals=6
 RESULT: token.totalSupply=80000000
 RESULT: token.wallet=0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976
 RESULT: token.adminWallet=0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0
-RESULT: token.DATE_PRESALE_START=1508952014 Wed, 25 Oct 2017 17:20:14 UTC
-RESULT: token.DATE_PRESALE_END=1508952064 Wed, 25 Oct 2017 17:21:04 UTC
-RESULT: token.DATE_ICO_START=1508952074 Wed, 25 Oct 2017 17:21:14 UTC
-RESULT: token.DATE_ICO_END=1508952164 Wed, 25 Oct 2017 17:22:44 UTC
+RESULT: token.DATE_PRESALE_START=1510133894 Wed, 08 Nov 2017 09:38:14 UTC
+RESULT: token.DATE_PRESALE_END=1510133944 Wed, 08 Nov 2017 09:39:04 UTC
+RESULT: token.DATE_ICO_START=1510133954 Wed, 08 Nov 2017 09:39:14 UTC
+RESULT: token.DATE_ICO_END=1510134044 Wed, 08 Nov 2017 09:40:44 UTC
 RESULT: token.tokensPerEth=1000000000
 RESULT: token.BONUS_PRESALE=40
 RESULT: token.BONUS_ICO_WEEK_ONE=20
@@ -303,9 +299,9 @@ RESULT: token.BONUS_ICO_WEEK_TWO=10
 RESULT: token.TOKEN_SUPPLY_TOTAL=400000000
 RESULT: token.TOKEN_SUPPLY_ICO=320000000
 RESULT: token.TOKEN_SUPPLY_MKT=80000000
-RESULT: token.PRESALE_ETH_CAP=500000
+RESULT: token.PRESALE_ETH_CAP=15000
 RESULT: token.MIN_FUNDING_GOAL=40000000
-RESULT: token.MIN_CONTRIBUTION=0.05
+RESULT: token.MIN_CONTRIBUTION=0.5
 RESULT: token.MAX_CONTRIBUTION=500000
 RESULT: token.COOLDOWN_PERIOD=30
 RESULT: token.CLAWBACK_PERIOD=7776000
@@ -316,13 +312,13 @@ RESULT: token.tokensIssuedMkt=80000000
 RESULT: token.tokensClaimedAirdrop=0
 RESULT: token.icoThresholdReached=false
 RESULT: token.isTransferable=false
-RESULT: WalletUpdated 0 #495 {"_newWallet":"0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976"}
-RESULT: AdminWalletUpdated 0 #495 {"_newAdminWallet":"0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0"}
-RESULT: TokensPerEthUpdated 0 #495 {"_tokensPerEth":"1000000000"}
-RESULT: TokensMinted 0 #495 {"_balance":"30000000000000","_owner":"0xabba43e7594e3b76afb157989e93c6621497fd4b","_tokens":"30000000000000"}
-RESULT: TokensMinted 1 #495 {"_balance":"50000000000000","_owner":"0xacca534c9f62ab495bd986e002ddf0f054caae4f","_tokens":"50000000000000"}
-RESULT: Transfer 0 #495: _from=0x0000000000000000000000000000000000000000 _to=0xabba43e7594e3b76afb157989e93c6621497fd4b _value=30000000
-RESULT: Transfer 1 #495: _from=0x0000000000000000000000000000000000000000 _to=0xacca534c9f62ab495bd986e002ddf0f054caae4f _value=50000000
+RESULT: WalletUpdated 0 #1096 {"_newWallet":"0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976"}
+RESULT: AdminWalletUpdated 0 #1097 {"_newAdminWallet":"0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0"}
+RESULT: TokensPerEthUpdated 0 #1097 {"_tokensPerEth":"1000000000"}
+RESULT: TokensMinted 0 #1097 {"_balance":"30000000000000","_owner":"0xabba43e7594e3b76afb157989e93c6621497fd4b","_tokens":"30000000000000"}
+RESULT: TokensMinted 1 #1097 {"_balance":"50000000000000","_owner":"0xacca534c9f62ab495bd986e002ddf0f054caae4f","_tokens":"50000000000000"}
+RESULT: Transfer 0 #1097: _from=0x0000000000000000000000000000000000000000 _to=0xabba43e7594e3b76afb157989e93c6621497fd4b _value=30000000
+RESULT: Transfer 1 #1097: _from=0x0000000000000000000000000000000000000000 _to=0xacca534c9f62ab495bd986e002ddf0f054caae4f _value=50000000
 undefined
 > 
 RESULT: 
@@ -336,8 +332,8 @@ undefined
 > 
 undefined
 > 
-RESULT: Waiting until 'DATE_PRESALE_START' at 1508952014+0s =Thu, 26 Oct 2017 04:20:15 AEDT now=Thu, 26 Oct 2017 04:19:01 AEDT
-RESULT: Waited until 'DATE_PRESALE_START' at at 1508952014+0s =Thu, 26 Oct 2017 04:20:15 AEDT now=Thu, 26 Oct 2017 04:20:15 AEDT
+RESULT: Waiting until 'DATE_PRESALE_START' at 1510133894+0s =Wed, 08 Nov 2017 20:38:15 AEDT now=Wed, 08 Nov 2017 20:37:33 AEDT
+RESULT: Waited until 'DATE_PRESALE_START' at at 1510133894+0s =Wed, 08 Nov 2017 20:38:15 AEDT now=Wed, 08 Nov 2017 20:38:15 AEDT
 RESULT: 
 undefined
 > 
@@ -357,16 +353,16 @@ undefined
 ... 
 undefined
 > 
-RESULT: sendContribution1Tx status=0x1 gas=400000 gasUsed=132930 costETH=0.00239274 costUSD=0.74210113278 @ ETH/USD=310.147 gasPrice=18000000000 block=514 txIx=0 txId=0x6330e72c3664ec1283adf7644fafa19586dc5043ece6ba459c0a572880ca421a @ 1508952024 Wed, 25 Oct 2017 17:20:24 UTC
+RESULT: sendContribution1Tx status=0x1 gas=400000 gasUsed=153064 costETH=0.002755152 costUSD=0.854502127344 @ ETH/USD=310.147 gasPrice=18000000000 block=1107 txIx=0 txId=0x918a22ebfe6f68b7cf7e2a1784afcb89c26d82c6cfa9aa5696848ee668d2d540 @ 1510133898 Wed, 08 Nov 2017 09:38:18 UTC
 undefined
 > 
 RESULT:  # Account                                             EtherBalanceChange              Token Name
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
-RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       93.048431574000000000           0.000000 Account #0 - Miner
-RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.046038834000000000           0.000000 Account #1 - Contract Owner
+RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       57.053731332000000000           0.000000 Account #0 - Miner
+RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.050976180000000000           0.000000 Account #1 - Contract Owner
 RESULT:  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976        0.000000000000000000           0.000000 Account #2 - Wallet
 RESULT:  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000 Account #3 - Admin Wallet
-RESULT:  4 0xa44a08d3f6933c69212114bb66e2df1813651844     -100.002392740000000000      140000.000000 Account #4
+RESULT:  4 0xa44a08d3f6933c69212114bb66e2df1813651844     -100.002755152000000000      140000.000000 Account #4
 RESULT:  5 0xa55a151eb00fded1634d27d1127b4be4627079ea        0.000000000000000000           0.000000 Account #5
 RESULT:  6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9        0.000000000000000000           0.000000 Account #6
 RESULT:  7 0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec        0.000000000000000000           0.000000 Account #7
@@ -375,7 +371,7 @@ RESULT:  9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.00000000000000000
 RESULT: 10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000 Account #10
 RESULT: 11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000    30000000.000000 Account #11 - Marketing 1
 RESULT: 12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000    50000000.000000 Account #12 - Marketing 2
-RESULT: 13 0x4590d6158ef2de082c74f10c219bc8daeba3235c      100.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
+RESULT: 13 0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e      100.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
 RESULT:                                                                              80140000.000000 Total Token Balances
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
@@ -385,7 +381,7 @@ undefined
 RESULT: PASS Send Contribution After DATE_PRESALE_START - ac4 100 ETH = 140,000 IDH (100 x 1,000 x 140%)
 1
 > 
-RESULT: tokenContractAddress=0x4590d6158ef2de082c74f10c219bc8daeba3235c
+RESULT: tokenContractAddress=0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e
 RESULT: token.owner=0xa11aae29840fbb5c86e6fd4cf809eba183aef433
 RESULT: token.newOwner=0x0000000000000000000000000000000000000000
 RESULT: token.name=indaHash Coin
@@ -394,10 +390,10 @@ RESULT: token.decimals=6
 RESULT: token.totalSupply=80140000
 RESULT: token.wallet=0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976
 RESULT: token.adminWallet=0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0
-RESULT: token.DATE_PRESALE_START=1508952014 Wed, 25 Oct 2017 17:20:14 UTC
-RESULT: token.DATE_PRESALE_END=1508952064 Wed, 25 Oct 2017 17:21:04 UTC
-RESULT: token.DATE_ICO_START=1508952074 Wed, 25 Oct 2017 17:21:14 UTC
-RESULT: token.DATE_ICO_END=1508952164 Wed, 25 Oct 2017 17:22:44 UTC
+RESULT: token.DATE_PRESALE_START=1510133894 Wed, 08 Nov 2017 09:38:14 UTC
+RESULT: token.DATE_PRESALE_END=1510133944 Wed, 08 Nov 2017 09:39:04 UTC
+RESULT: token.DATE_ICO_START=1510133954 Wed, 08 Nov 2017 09:39:14 UTC
+RESULT: token.DATE_ICO_END=1510134044 Wed, 08 Nov 2017 09:40:44 UTC
 RESULT: token.tokensPerEth=1000000000
 RESULT: token.BONUS_PRESALE=40
 RESULT: token.BONUS_ICO_WEEK_ONE=20
@@ -405,9 +401,9 @@ RESULT: token.BONUS_ICO_WEEK_TWO=10
 RESULT: token.TOKEN_SUPPLY_TOTAL=400000000
 RESULT: token.TOKEN_SUPPLY_ICO=320000000
 RESULT: token.TOKEN_SUPPLY_MKT=80000000
-RESULT: token.PRESALE_ETH_CAP=500000
+RESULT: token.PRESALE_ETH_CAP=15000
 RESULT: token.MIN_FUNDING_GOAL=40000000
-RESULT: token.MIN_CONTRIBUTION=0.05
+RESULT: token.MIN_CONTRIBUTION=0.5
 RESULT: token.MAX_CONTRIBUTION=500000
 RESULT: token.COOLDOWN_PERIOD=30
 RESULT: token.CLAWBACK_PERIOD=7776000
@@ -418,8 +414,8 @@ RESULT: token.tokensIssuedMkt=80000000
 RESULT: token.tokensClaimedAirdrop=0
 RESULT: token.icoThresholdReached=false
 RESULT: token.isTransferable=false
-RESULT: TokensIssued 0 #514 {"_balance":"140000000000","_etherContributed":"100000000000000000000","_owner":"0xa44a08d3f6933c69212114bb66e2df1813651844","_tokens":"140000000000"}
-RESULT: Transfer 0 #514: _from=0x0000000000000000000000000000000000000000 _to=0xa44a08d3f6933c69212114bb66e2df1813651844 _value=140000
+RESULT: TokensIssued 0 #1107 {"_balance":"140000000000","_etherContributed":"100000000000000000000","_owner":"0xa44a08d3f6933c69212114bb66e2df1813651844","_tokens":"140000000000"}
+RESULT: Transfer 0 #1107: _from=0x0000000000000000000000000000000000000000 _to=0xa44a08d3f6933c69212114bb66e2df1813651844 _value=140000
 undefined
 > 
 RESULT: 
@@ -433,8 +429,8 @@ undefined
 > 
 undefined
 > 
-RESULT: Waiting until 'DATE_ICO_START' at 1508952074+0s =Thu, 26 Oct 2017 04:21:15 AEDT now=Thu, 26 Oct 2017 04:20:44 AEDT
-RESULT: Waited until 'DATE_ICO_START' at at 1508952074+0s =Thu, 26 Oct 2017 04:21:15 AEDT now=Thu, 26 Oct 2017 04:21:15 AEDT
+RESULT: Waiting until 'DATE_ICO_START' at 1510133954+0s =Wed, 08 Nov 2017 20:39:15 AEDT now=Wed, 08 Nov 2017 20:38:23 AEDT
+RESULT: Waited until 'DATE_ICO_START' at at 1510133954+0s =Wed, 08 Nov 2017 20:39:15 AEDT now=Wed, 08 Nov 2017 20:39:15 AEDT
 RESULT: 
 undefined
 > 
@@ -454,17 +450,17 @@ undefined
 ... 
 undefined
 > 
-RESULT: sendContribution2Tx status=0x1 gas=400000 gasUsed=102814 costETH=0.001850652 costUSD=0.573974165844 @ ETH/USD=310.147 gasPrice=18000000000 block=525 txIx=0 txId=0x689b9e2c676e4304fc8b8e05320c17472cdcdd2a3fd29a118cb70151750b2855 @ 1508952084 Wed, 25 Oct 2017 17:21:24 UTC
+RESULT: sendContribution2Tx status=0x1 gas=400000 gasUsed=122948 costETH=0.002213064 costUSD=0.686375160408 @ ETH/USD=310.147 gasPrice=18000000000 block=1121 txIx=0 txId=0x0cbb8502eec06df4522f806b4b2371ac9ec61bcd9ab1f88c13dde34891b9915c @ 1510133956 Wed, 08 Nov 2017 09:39:16 UTC
 undefined
 > 
 RESULT:  # Account                                             EtherBalanceChange              Token Name
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
-RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e      126.050282226000000000           0.000000 Account #0 - Miner
-RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.046038834000000000           0.000000 Account #1 - Contract Owner
+RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e       99.055944396000000000           0.000000 Account #0 - Miner
+RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.050976180000000000           0.000000 Account #1 - Contract Owner
 RESULT:  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976        0.000000000000000000           0.000000 Account #2 - Wallet
 RESULT:  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000 Account #3 - Admin Wallet
-RESULT:  4 0xa44a08d3f6933c69212114bb66e2df1813651844     -100.002392740000000000      140000.000000 Account #4
-RESULT:  5 0xa55a151eb00fded1634d27d1127b4be4627079ea     -100.001850652000000000      120000.000000 Account #5
+RESULT:  4 0xa44a08d3f6933c69212114bb66e2df1813651844     -100.002755152000000000      140000.000000 Account #4
+RESULT:  5 0xa55a151eb00fded1634d27d1127b4be4627079ea     -100.002213064000000000      120000.000000 Account #5
 RESULT:  6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9        0.000000000000000000           0.000000 Account #6
 RESULT:  7 0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec        0.000000000000000000           0.000000 Account #7
 RESULT:  8 0xa88a05d2b88283ce84c8325760b72a64591279a2        0.000000000000000000           0.000000 Account #8
@@ -472,7 +468,7 @@ RESULT:  9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.00000000000000000
 RESULT: 10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000 Account #10
 RESULT: 11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000    30000000.000000 Account #11 - Marketing 1
 RESULT: 12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000    50000000.000000 Account #12 - Marketing 2
-RESULT: 13 0x4590d6158ef2de082c74f10c219bc8daeba3235c      200.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
+RESULT: 13 0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e      200.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
 RESULT:                                                                              80260000.000000 Total Token Balances
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
@@ -482,7 +478,7 @@ undefined
 RESULT: PASS Send Contribution After DATE_ICO_START - ac5 100 ETH = 120,000 IDH (100 x 1,000 x 120%)
 1
 > 
-RESULT: tokenContractAddress=0x4590d6158ef2de082c74f10c219bc8daeba3235c
+RESULT: tokenContractAddress=0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e
 RESULT: token.owner=0xa11aae29840fbb5c86e6fd4cf809eba183aef433
 RESULT: token.newOwner=0x0000000000000000000000000000000000000000
 RESULT: token.name=indaHash Coin
@@ -491,10 +487,10 @@ RESULT: token.decimals=6
 RESULT: token.totalSupply=80260000
 RESULT: token.wallet=0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976
 RESULT: token.adminWallet=0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0
-RESULT: token.DATE_PRESALE_START=1508952014 Wed, 25 Oct 2017 17:20:14 UTC
-RESULT: token.DATE_PRESALE_END=1508952064 Wed, 25 Oct 2017 17:21:04 UTC
-RESULT: token.DATE_ICO_START=1508952074 Wed, 25 Oct 2017 17:21:14 UTC
-RESULT: token.DATE_ICO_END=1508952164 Wed, 25 Oct 2017 17:22:44 UTC
+RESULT: token.DATE_PRESALE_START=1510133894 Wed, 08 Nov 2017 09:38:14 UTC
+RESULT: token.DATE_PRESALE_END=1510133944 Wed, 08 Nov 2017 09:39:04 UTC
+RESULT: token.DATE_ICO_START=1510133954 Wed, 08 Nov 2017 09:39:14 UTC
+RESULT: token.DATE_ICO_END=1510134044 Wed, 08 Nov 2017 09:40:44 UTC
 RESULT: token.tokensPerEth=1000000000
 RESULT: token.BONUS_PRESALE=40
 RESULT: token.BONUS_ICO_WEEK_ONE=20
@@ -502,9 +498,9 @@ RESULT: token.BONUS_ICO_WEEK_TWO=10
 RESULT: token.TOKEN_SUPPLY_TOTAL=400000000
 RESULT: token.TOKEN_SUPPLY_ICO=320000000
 RESULT: token.TOKEN_SUPPLY_MKT=80000000
-RESULT: token.PRESALE_ETH_CAP=500000
+RESULT: token.PRESALE_ETH_CAP=15000
 RESULT: token.MIN_FUNDING_GOAL=40000000
-RESULT: token.MIN_CONTRIBUTION=0.05
+RESULT: token.MIN_CONTRIBUTION=0.5
 RESULT: token.MAX_CONTRIBUTION=500000
 RESULT: token.COOLDOWN_PERIOD=30
 RESULT: token.CLAWBACK_PERIOD=7776000
@@ -515,8 +511,8 @@ RESULT: token.tokensIssuedMkt=80000000
 RESULT: token.tokensClaimedAirdrop=0
 RESULT: token.icoThresholdReached=false
 RESULT: token.isTransferable=false
-RESULT: TokensIssued 0 #525 {"_balance":"120000000000","_etherContributed":"100000000000000000000","_owner":"0xa55a151eb00fded1634d27d1127b4be4627079ea","_tokens":"120000000000"}
-RESULT: Transfer 0 #525: _from=0x0000000000000000000000000000000000000000 _to=0xa55a151eb00fded1634d27d1127b4be4627079ea _value=120000
+RESULT: TokensIssued 0 #1121 {"_balance":"120000000000","_etherContributed":"100000000000000000000","_owner":"0xa55a151eb00fded1634d27d1127b4be4627079ea","_tokens":"120000000000"}
+RESULT: Transfer 0 #1121: _from=0x0000000000000000000000000000000000000000 _to=0xa55a151eb00fded1634d27d1127b4be4627079ea _value=120000
 undefined
 > 
 RESULT: 
@@ -530,8 +526,8 @@ undefined
 > 
 undefined
 > 
-RESULT: Waiting until 'DATE_ICO_START + 1 week [30 seconds]' at 1508952074+30s =Thu, 26 Oct 2017 04:21:45 AEDT now=Thu, 26 Oct 2017 04:21:30 AEDT
-RESULT: Waited until 'DATE_ICO_START + 1 week [30 seconds]' at at 1508952074+30s =Thu, 26 Oct 2017 04:21:45 AEDT now=Thu, 26 Oct 2017 04:21:45 AEDT
+RESULT: Waiting until 'DATE_ICO_START + 1 week [30 seconds]' at 1510133954+30s =Wed, 08 Nov 2017 20:39:45 AEDT now=Wed, 08 Nov 2017 20:39:21 AEDT
+RESULT: Waited until 'DATE_ICO_START + 1 week [30 seconds]' at at 1510133954+30s =Wed, 08 Nov 2017 20:39:45 AEDT now=Wed, 08 Nov 2017 20:39:45 AEDT
 RESULT: 
 undefined
 > 
@@ -551,25 +547,25 @@ undefined
 ... 
 undefined
 > 
-RESULT: sendContribution3Tx status=0x1 gas=400000 gasUsed=102829 costETH=0.001850922 costUSD=0.574057905534 @ ETH/USD=310.147 gasPrice=18000000000 block=531 txIx=0 txId=0x8e1afbff82565c32297f924342176edf933e0bd63934752bed2d7f063a5937b3 @ 1508952113 Wed, 25 Oct 2017 17:21:53 UTC
+RESULT: sendContribution3Tx status=0x1 gas=400000 gasUsed=122963 costETH=0.002213334 costUSD=0.686458900098 @ ETH/USD=310.147 gasPrice=18000000000 block=1130 txIx=0 txId=0xd2016816b9755d2c70b0866df62e600d5b3268a9d5b04c7b6de34be3d1c2dd4b @ 1510133985 Wed, 08 Nov 2017 09:39:45 UTC
 undefined
 > 
 RESULT:  # Account                                             EtherBalanceChange              Token Name
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
-RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e      144.052133148000000000           0.000000 Account #0 - Miner
-RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.046038834000000000           0.000000 Account #1 - Contract Owner
+RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e      126.058157730000000000           0.000000 Account #0 - Miner
+RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.050976180000000000           0.000000 Account #1 - Contract Owner
 RESULT:  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976        0.000000000000000000           0.000000 Account #2 - Wallet
 RESULT:  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000 Account #3 - Admin Wallet
-RESULT:  4 0xa44a08d3f6933c69212114bb66e2df1813651844     -100.002392740000000000      140000.000000 Account #4
-RESULT:  5 0xa55a151eb00fded1634d27d1127b4be4627079ea     -100.001850652000000000      120000.000000 Account #5
-RESULT:  6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9     -100.001850922000000000      110000.000000 Account #6
+RESULT:  4 0xa44a08d3f6933c69212114bb66e2df1813651844     -100.002755152000000000      140000.000000 Account #4
+RESULT:  5 0xa55a151eb00fded1634d27d1127b4be4627079ea     -100.002213064000000000      120000.000000 Account #5
+RESULT:  6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9     -100.002213334000000000      110000.000000 Account #6
 RESULT:  7 0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec        0.000000000000000000           0.000000 Account #7
 RESULT:  8 0xa88a05d2b88283ce84c8325760b72a64591279a2        0.000000000000000000           0.000000 Account #8
 RESULT:  9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.000000000000000000           0.000000 Account #9
 RESULT: 10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000 Account #10
 RESULT: 11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000    30000000.000000 Account #11 - Marketing 1
 RESULT: 12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000    50000000.000000 Account #12 - Marketing 2
-RESULT: 13 0x4590d6158ef2de082c74f10c219bc8daeba3235c      300.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
+RESULT: 13 0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e      300.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
 RESULT:                                                                              80370000.000000 Total Token Balances
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
@@ -579,7 +575,7 @@ undefined
 RESULT: PASS Send Contribution After DATE_ICO_START + 1 week [30 seconds] - ac6 100 ETH = 110,000 IDH (100 x 1,000 x 110%)
 1
 > 
-RESULT: tokenContractAddress=0x4590d6158ef2de082c74f10c219bc8daeba3235c
+RESULT: tokenContractAddress=0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e
 RESULT: token.owner=0xa11aae29840fbb5c86e6fd4cf809eba183aef433
 RESULT: token.newOwner=0x0000000000000000000000000000000000000000
 RESULT: token.name=indaHash Coin
@@ -588,10 +584,10 @@ RESULT: token.decimals=6
 RESULT: token.totalSupply=80370000
 RESULT: token.wallet=0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976
 RESULT: token.adminWallet=0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0
-RESULT: token.DATE_PRESALE_START=1508952014 Wed, 25 Oct 2017 17:20:14 UTC
-RESULT: token.DATE_PRESALE_END=1508952064 Wed, 25 Oct 2017 17:21:04 UTC
-RESULT: token.DATE_ICO_START=1508952074 Wed, 25 Oct 2017 17:21:14 UTC
-RESULT: token.DATE_ICO_END=1508952164 Wed, 25 Oct 2017 17:22:44 UTC
+RESULT: token.DATE_PRESALE_START=1510133894 Wed, 08 Nov 2017 09:38:14 UTC
+RESULT: token.DATE_PRESALE_END=1510133944 Wed, 08 Nov 2017 09:39:04 UTC
+RESULT: token.DATE_ICO_START=1510133954 Wed, 08 Nov 2017 09:39:14 UTC
+RESULT: token.DATE_ICO_END=1510134044 Wed, 08 Nov 2017 09:40:44 UTC
 RESULT: token.tokensPerEth=1000000000
 RESULT: token.BONUS_PRESALE=40
 RESULT: token.BONUS_ICO_WEEK_ONE=20
@@ -599,9 +595,9 @@ RESULT: token.BONUS_ICO_WEEK_TWO=10
 RESULT: token.TOKEN_SUPPLY_TOTAL=400000000
 RESULT: token.TOKEN_SUPPLY_ICO=320000000
 RESULT: token.TOKEN_SUPPLY_MKT=80000000
-RESULT: token.PRESALE_ETH_CAP=500000
+RESULT: token.PRESALE_ETH_CAP=15000
 RESULT: token.MIN_FUNDING_GOAL=40000000
-RESULT: token.MIN_CONTRIBUTION=0.05
+RESULT: token.MIN_CONTRIBUTION=0.5
 RESULT: token.MAX_CONTRIBUTION=500000
 RESULT: token.COOLDOWN_PERIOD=30
 RESULT: token.CLAWBACK_PERIOD=7776000
@@ -612,8 +608,8 @@ RESULT: token.tokensIssuedMkt=80000000
 RESULT: token.tokensClaimedAirdrop=0
 RESULT: token.icoThresholdReached=false
 RESULT: token.isTransferable=false
-RESULT: TokensIssued 0 #531 {"_balance":"110000000000","_etherContributed":"100000000000000000000","_owner":"0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9","_tokens":"110000000000"}
-RESULT: Transfer 0 #531: _from=0x0000000000000000000000000000000000000000 _to=0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9 _value=110000
+RESULT: TokensIssued 0 #1130 {"_balance":"110000000000","_etherContributed":"100000000000000000000","_owner":"0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9","_tokens":"110000000000"}
+RESULT: Transfer 0 #1130: _from=0x0000000000000000000000000000000000000000 _to=0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9 _value=110000
 undefined
 > 
 RESULT: 
@@ -627,8 +623,8 @@ undefined
 > 
 undefined
 > 
-RESULT: Waiting until 'DATE_ICO_START + 2 weeks [60 seconds]' at 1508952074+60s =Thu, 26 Oct 2017 04:22:15 AEDT now=Thu, 26 Oct 2017 04:21:59 AEDT
-RESULT: Waited until 'DATE_ICO_START + 2 weeks [60 seconds]' at at 1508952074+60s =Thu, 26 Oct 2017 04:22:15 AEDT now=Thu, 26 Oct 2017 04:22:15 AEDT
+RESULT: Waiting until 'DATE_ICO_START + 2 weeks [60 seconds]' at 1510133954+60s =Wed, 08 Nov 2017 20:40:15 AEDT now=Wed, 08 Nov 2017 20:39:50 AEDT
+RESULT: Waited until 'DATE_ICO_START + 2 weeks [60 seconds]' at at 1510133954+60s =Wed, 08 Nov 2017 20:40:15 AEDT now=Wed, 08 Nov 2017 20:40:15 AEDT
 RESULT: 
 undefined
 > 
@@ -648,25 +644,25 @@ undefined
 ... 
 undefined
 > 
-RESULT: sendContribution4_1Tx status=0x1 gas=400000 gasUsed=109586 costETH=0.001972548 costUSD=0.611779844556 @ ETH/USD=310.147 gasPrice=18000000000 block=539 txIx=0 txId=0x97ddb695f34a157a75eef8ab9c71cc00ecf6d78b2f302f8f858ce74ce3bf9a0c @ 1508952137 Wed, 25 Oct 2017 17:22:17 UTC
+RESULT: sendContribution4_1Tx status=0x1 gas=400000 gasUsed=129720 costETH=0.00233496 costUSD=0.72418083912 @ ETH/USD=310.147 gasPrice=18000000000 block=1136 txIx=0 txId=0x5eddf82014f540bec5434ea482489f2dae33a6c241db3c7df2ca34feffa8b68e @ 1510134015 Wed, 08 Nov 2017 09:40:15 UTC
 undefined
 > 
 RESULT:  # Account                                             EtherBalanceChange              Token Name
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
-RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e      168.054876672000000000           0.000000 Account #0 - Miner
-RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.046038834000000000           0.000000 Account #1 - Contract Owner
+RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e      144.060492690000000000           0.000000 Account #0 - Miner
+RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.050976180000000000           0.000000 Account #1 - Contract Owner
 RESULT:  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976    39930.000000000000000000           0.000000 Account #2 - Wallet
 RESULT:  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0        0.000000000000000000           0.000000 Account #3 - Admin Wallet
-RESULT:  4 0xa44a08d3f6933c69212114bb66e2df1813651844     -100.002392740000000000      140000.000000 Account #4
-RESULT:  5 0xa55a151eb00fded1634d27d1127b4be4627079ea     -100.001850652000000000      120000.000000 Account #5
-RESULT:  6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9     -100.001850922000000000      110000.000000 Account #6
-RESULT:  7 0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec   -39630.002743524000000000    39630000.000000 Account #7
+RESULT:  4 0xa44a08d3f6933c69212114bb66e2df1813651844     -100.002755152000000000      140000.000000 Account #4
+RESULT:  5 0xa55a151eb00fded1634d27d1127b4be4627079ea     -100.002213064000000000      120000.000000 Account #5
+RESULT:  6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9     -100.002213334000000000      110000.000000 Account #6
+RESULT:  7 0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec   -39630.002334960000000000    39630000.000000 Account #7
 RESULT:  8 0xa88a05d2b88283ce84c8325760b72a64591279a2        0.000000000000000000           0.000000 Account #8
 RESULT:  9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.000000000000000000           0.000000 Account #9
 RESULT: 10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000 Account #10
 RESULT: 11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000    30000000.000000 Account #11 - Marketing 1
 RESULT: 12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000    50000000.000000 Account #12 - Marketing 2
-RESULT: 13 0x4590d6158ef2de082c74f10c219bc8daeba3235c        0.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
+RESULT: 13 0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e        0.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
 RESULT:                                                                             120000000.000000 Total Token Balances
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
@@ -676,7 +672,7 @@ undefined
 RESULT: PASS Send Contribution After DATE_ICO_START + 2 weeks [60 seconds] - ac7 39,630 ETH = 39,630 IDH
 1
 > 
-RESULT: tokenContractAddress=0x4590d6158ef2de082c74f10c219bc8daeba3235c
+RESULT: tokenContractAddress=0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e
 RESULT: token.owner=0xa11aae29840fbb5c86e6fd4cf809eba183aef433
 RESULT: token.newOwner=0x0000000000000000000000000000000000000000
 RESULT: token.name=indaHash Coin
@@ -685,10 +681,10 @@ RESULT: token.decimals=6
 RESULT: token.totalSupply=120000000
 RESULT: token.wallet=0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976
 RESULT: token.adminWallet=0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0
-RESULT: token.DATE_PRESALE_START=1508952014 Wed, 25 Oct 2017 17:20:14 UTC
-RESULT: token.DATE_PRESALE_END=1508952064 Wed, 25 Oct 2017 17:21:04 UTC
-RESULT: token.DATE_ICO_START=1508952074 Wed, 25 Oct 2017 17:21:14 UTC
-RESULT: token.DATE_ICO_END=1508952164 Wed, 25 Oct 2017 17:22:44 UTC
+RESULT: token.DATE_PRESALE_START=1510133894 Wed, 08 Nov 2017 09:38:14 UTC
+RESULT: token.DATE_PRESALE_END=1510133944 Wed, 08 Nov 2017 09:39:04 UTC
+RESULT: token.DATE_ICO_START=1510133954 Wed, 08 Nov 2017 09:39:14 UTC
+RESULT: token.DATE_ICO_END=1510134044 Wed, 08 Nov 2017 09:40:44 UTC
 RESULT: token.tokensPerEth=1000000000
 RESULT: token.BONUS_PRESALE=40
 RESULT: token.BONUS_ICO_WEEK_ONE=20
@@ -696,9 +692,9 @@ RESULT: token.BONUS_ICO_WEEK_TWO=10
 RESULT: token.TOKEN_SUPPLY_TOTAL=400000000
 RESULT: token.TOKEN_SUPPLY_ICO=320000000
 RESULT: token.TOKEN_SUPPLY_MKT=80000000
-RESULT: token.PRESALE_ETH_CAP=500000
+RESULT: token.PRESALE_ETH_CAP=15000
 RESULT: token.MIN_FUNDING_GOAL=40000000
-RESULT: token.MIN_CONTRIBUTION=0.05
+RESULT: token.MIN_CONTRIBUTION=0.5
 RESULT: token.MAX_CONTRIBUTION=500000
 RESULT: token.COOLDOWN_PERIOD=30
 RESULT: token.CLAWBACK_PERIOD=7776000
@@ -709,8 +705,8 @@ RESULT: token.tokensIssuedMkt=80000000
 RESULT: token.tokensClaimedAirdrop=0
 RESULT: token.icoThresholdReached=true
 RESULT: token.isTransferable=false
-RESULT: TokensIssued 0 #539 {"_balance":"39630000000000","_etherContributed":"3.963e+22","_owner":"0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec","_tokens":"39630000000000"}
-RESULT: Transfer 0 #539: _from=0x0000000000000000000000000000000000000000 _to=0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec _value=39630000
+RESULT: TokensIssued 0 #1136 {"_balance":"39630000000000","_etherContributed":"3.963e+22","_owner":"0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec","_tokens":"39630000000000"}
+RESULT: Transfer 0 #1136: _from=0x0000000000000000000000000000000000000000 _to=0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec _value=39630000
 undefined
 > 
 RESULT: 
@@ -724,8 +720,8 @@ undefined
 > 
 undefined
 > 
-RESULT: Waiting until 'DATE_ICO_END' at 1508952164+0s =Thu, 26 Oct 2017 04:22:45 AEDT now=Thu, 26 Oct 2017 04:22:27 AEDT
-RESULT: Waited until 'DATE_ICO_END' at at 1508952164+0s =Thu, 26 Oct 2017 04:22:45 AEDT now=Thu, 26 Oct 2017 04:22:45 AEDT
+RESULT: Waiting until 'DATE_ICO_END' at 1510134044+0s =Wed, 08 Nov 2017 20:40:45 AEDT now=Wed, 08 Nov 2017 20:40:31 AEDT
+RESULT: Waited until 'DATE_ICO_END' at at 1510134044+0s =Wed, 08 Nov 2017 20:40:45 AEDT now=Wed, 08 Nov 2017 20:40:45 AEDT
 RESULT: 
 undefined
 > 
@@ -751,34 +747,34 @@ undefined
 ... 
 undefined
 > 
-RESULT: airdrop1_1Tx status=0x1 gas=100000 gasUsed=62366 costETH=0.001122588 costUSD=0.348167300436 @ ETH/USD=310.147 gasPrice=18000000000 block=545 txIx=3 txId=0x190124eb090251457d5fc322ade9f1acf614b2e36e615633f4804fcad3ee855a @ 1508952180 Wed, 25 Oct 2017 17:23:00 UTC
+RESULT: airdrop1_1Tx status=0x1 gas=100000 gasUsed=62388 costETH=0.001122984 costUSD=0.348290118648 @ ETH/USD=310.147 gasPrice=18000000000 block=1139 txIx=3 txId=0xed4bf84c82af35a0c049d9b1cd341452c9a74acbcb47121421d7789b84ae4812 @ 1510134049 Wed, 08 Nov 2017 09:40:49 UTC
 undefined
 > 
-RESULT: airdrop1_2Tx status=0x1 gas=100000 gasUsed=77366 costETH=0.001392588 costUSD=0.431906990436 @ ETH/USD=310.147 gasPrice=18000000000 block=545 txIx=0 txId=0x05a892e72feffbd256df4fb5ffc90d6cd0c5103ba75e547f9c0643a101c01f10 @ 1508952180 Wed, 25 Oct 2017 17:23:00 UTC
+RESULT: airdrop1_2Tx status=0x1 gas=100000 gasUsed=62388 costETH=0.001122984 costUSD=0.348290118648 @ ETH/USD=310.147 gasPrice=18000000000 block=1139 txIx=2 txId=0x7d2bf0ec6fb1ee5b1a7a082fc93926d9f06be5d7d8aacd08c1d8b43525dc8b43 @ 1510134049 Wed, 08 Nov 2017 09:40:49 UTC
 undefined
 > 
-RESULT: airdrop1_3Tx status=0x1 gas=100000 gasUsed=62366 costETH=0.001122588 costUSD=0.348167300436 @ ETH/USD=310.147 gasPrice=18000000000 block=545 txIx=7 txId=0xff0f3109d022115e1ef814344eee71db4b2fb5bb2524e141f3b7d0fefc2794c9 @ 1508952180 Wed, 25 Oct 2017 17:23:00 UTC
+RESULT: airdrop1_3Tx status=0x1 gas=100000 gasUsed=62388 costETH=0.001122984 costUSD=0.348290118648 @ ETH/USD=310.147 gasPrice=18000000000 block=1139 txIx=1 txId=0xeac39e66939f5657d9c448e87b796593800262d82d38e2117f45e61dafc2d469 @ 1510134049 Wed, 08 Nov 2017 09:40:49 UTC
 undefined
 > 
-RESULT: airdrop1_4Tx status=0x1 gas=100000 gasUsed=64311 costETH=0.001157598 costUSD=0.359025546906 @ ETH/USD=310.147 gasPrice=18000000000 block=545 txIx=6 txId=0x19f8615adc44ef9df0547011fb2c6e970a347ec5fa1f3e234e6158209071b59a @ 1508952180 Wed, 25 Oct 2017 17:23:00 UTC
+RESULT: airdrop1_4Tx status=0x1 gas=100000 gasUsed=79333 costETH=0.001427994 costUSD=0.442888055118 @ ETH/USD=310.147 gasPrice=18000000000 block=1139 txIx=0 txId=0x52e969906a8adf615b4fa87955e349285fc60dc712f13c820c6454bad1eb6769 @ 1510134049 Wed, 08 Nov 2017 09:40:49 UTC
 undefined
 > 
 RESULT:  # Account                                             EtherBalanceChange              Token Name
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
-RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e      186.061213986000000000           0.000000 Account #0 - Miner
-RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.046038834000000000           0.000000 Account #1 - Contract Owner
+RESULT:  0 0xa00af22d07c87d96eeeb0ed583f8f6ac7812827e      153.065289636000000000           0.000000 Account #0 - Miner
+RESULT:  1 0xa11aae29840fbb5c86e6fd4cf809eba183aef433       -0.050976180000000000           0.000000 Account #1 - Contract Owner
 RESULT:  2 0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976    39930.000000000000000000           0.000000 Account #2 - Wallet
-RESULT:  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0       -0.001157598000000000           0.000000 Account #3 - Admin Wallet
-RESULT:  4 0xa44a08d3f6933c69212114bb66e2df1813651844     -100.004286304000000000     1120000.000000 Account #4
-RESULT:  5 0xa55a151eb00fded1634d27d1127b4be4627079ea     -100.004014216000000000      960000.000000 Account #5
-RESULT:  6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9     -100.002973510000000000      880000.000000 Account #6
-RESULT:  7 0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec   -39630.002743524000000000   317040000.000000 Account #7
+RESULT:  3 0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0       -0.001427994000000000           0.000000 Account #3 - Admin Wallet
+RESULT:  4 0xa44a08d3f6933c69212114bb66e2df1813651844     -100.003878136000000000     1120000.000000 Account #4
+RESULT:  5 0xa55a151eb00fded1634d27d1127b4be4627079ea     -100.003336048000000000      960000.000000 Account #5
+RESULT:  6 0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9     -100.003336318000000000      880000.000000 Account #6
+RESULT:  7 0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec   -39630.002334960000000000   317040000.000000 Account #7
 RESULT:  8 0xa88a05d2b88283ce84c8325760b72a64591279a2        0.000000000000000000           0.000000 Account #8
 RESULT:  9 0xa99a0ae3354c06b1459fd441a32a3f71005d7da0        0.000000000000000000           0.000000 Account #9
 RESULT: 10 0xaaaa9de1e6c564446ebca0fd102d8bd92093c756        0.000000000000000000           0.000000 Account #10
 RESULT: 11 0xabba43e7594e3b76afb157989e93c6621497fd4b        0.000000000000000000    30000000.000000 Account #11 - Marketing 1
 RESULT: 12 0xacca534c9f62ab495bd986e002ddf0f054caae4f        0.000000000000000000    50000000.000000 Account #12 - Marketing 2
-RESULT: 13 0x4590d6158ef2de082c74f10c219bc8daeba3235c        0.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
+RESULT: 13 0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e        0.000000000000000000           0.000000 Token 'IDH' 'indaHash Coin'
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
 RESULT:                                                                             400000000.000000 Total Token Balances
 RESULT: -- ------------------------------------------ --------------------------- ------------------ ---------------------------
@@ -797,7 +793,7 @@ RESULT: PASS Airdrop - ac6
 RESULT: PASS Airdrop - ac7 by admin
 1
 > 
-RESULT: tokenContractAddress=0x4590d6158ef2de082c74f10c219bc8daeba3235c
+RESULT: tokenContractAddress=0x2f9c836fb15d19d1ad679f2d86ca6841e24c8d7e
 RESULT: token.owner=0xa11aae29840fbb5c86e6fd4cf809eba183aef433
 RESULT: token.newOwner=0x0000000000000000000000000000000000000000
 RESULT: token.name=indaHash Coin
@@ -806,10 +802,10 @@ RESULT: token.decimals=6
 RESULT: token.totalSupply=400000000
 RESULT: token.wallet=0xa22ab8a9d641ce77e06d98b7d7065d324d3d6976
 RESULT: token.adminWallet=0xa33a6c312d9ad0e0f2e95541beed0cc081621fd0
-RESULT: token.DATE_PRESALE_START=1508952014 Wed, 25 Oct 2017 17:20:14 UTC
-RESULT: token.DATE_PRESALE_END=1508952064 Wed, 25 Oct 2017 17:21:04 UTC
-RESULT: token.DATE_ICO_START=1508952074 Wed, 25 Oct 2017 17:21:14 UTC
-RESULT: token.DATE_ICO_END=1508952164 Wed, 25 Oct 2017 17:22:44 UTC
+RESULT: token.DATE_PRESALE_START=1510133894 Wed, 08 Nov 2017 09:38:14 UTC
+RESULT: token.DATE_PRESALE_END=1510133944 Wed, 08 Nov 2017 09:39:04 UTC
+RESULT: token.DATE_ICO_START=1510133954 Wed, 08 Nov 2017 09:39:14 UTC
+RESULT: token.DATE_ICO_END=1510134044 Wed, 08 Nov 2017 09:40:44 UTC
 RESULT: token.tokensPerEth=1000000000
 RESULT: token.BONUS_PRESALE=40
 RESULT: token.BONUS_ICO_WEEK_ONE=20
@@ -817,9 +813,9 @@ RESULT: token.BONUS_ICO_WEEK_TWO=10
 RESULT: token.TOKEN_SUPPLY_TOTAL=400000000
 RESULT: token.TOKEN_SUPPLY_ICO=320000000
 RESULT: token.TOKEN_SUPPLY_MKT=80000000
-RESULT: token.PRESALE_ETH_CAP=500000
+RESULT: token.PRESALE_ETH_CAP=15000
 RESULT: token.MIN_FUNDING_GOAL=40000000
-RESULT: token.MIN_CONTRIBUTION=0.05
+RESULT: token.MIN_CONTRIBUTION=0.5
 RESULT: token.MAX_CONTRIBUTION=500000
 RESULT: token.COOLDOWN_PERIOD=30
 RESULT: token.CLAWBACK_PERIOD=7776000
@@ -830,14 +826,14 @@ RESULT: token.tokensIssuedMkt=80000000
 RESULT: token.tokensClaimedAirdrop=280000000
 RESULT: token.icoThresholdReached=true
 RESULT: token.isTransferable=false
-RESULT: Airdrop 0 #545 {"_amount":"840000000000","_balance":"960000000000","_owner":"0xa55a151eb00fded1634d27d1127b4be4627079ea"}
-RESULT: Airdrop 1 #545 {"_amount":"980000000000","_balance":"1120000000000","_owner":"0xa44a08d3f6933c69212114bb66e2df1813651844"}
-RESULT: Airdrop 2 #545 {"_amount":"277410000000000","_balance":"317040000000000","_owner":"0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec"}
-RESULT: Airdrop 3 #545 {"_amount":"770000000000","_balance":"880000000000","_owner":"0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9"}
-RESULT: Transfer 0 #545: _from=0x0000000000000000000000000000000000000000 _to=0xa55a151eb00fded1634d27d1127b4be4627079ea _value=840000
-RESULT: Transfer 1 #545: _from=0x0000000000000000000000000000000000000000 _to=0xa44a08d3f6933c69212114bb66e2df1813651844 _value=980000
-RESULT: Transfer 2 #545: _from=0x0000000000000000000000000000000000000000 _to=0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec _value=277410000
-RESULT: Transfer 3 #545: _from=0x0000000000000000000000000000000000000000 _to=0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9 _value=770000
+RESULT: Airdrop 0 #1139 {"_amount":"277410000000000","_balance":"317040000000000","_owner":"0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec"}
+RESULT: Airdrop 1 #1139 {"_amount":"770000000000","_balance":"880000000000","_owner":"0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9"}
+RESULT: Airdrop 2 #1139 {"_amount":"840000000000","_balance":"960000000000","_owner":"0xa55a151eb00fded1634d27d1127b4be4627079ea"}
+RESULT: Airdrop 3 #1139 {"_amount":"980000000000","_balance":"1120000000000","_owner":"0xa44a08d3f6933c69212114bb66e2df1813651844"}
+RESULT: Transfer 0 #1139: _from=0x0000000000000000000000000000000000000000 _to=0xa77a2b9d4b1c010a22a7c565dc418cef683dbcec _value=277410000
+RESULT: Transfer 1 #1139: _from=0x0000000000000000000000000000000000000000 _to=0xa66a85ede0cbe03694aa9d9de0bb19c99ff55bd9 _value=770000
+RESULT: Transfer 2 #1139: _from=0x0000000000000000000000000000000000000000 _to=0xa55a151eb00fded1634d27d1127b4be4627079ea _value=840000
+RESULT: Transfer 3 #1139: _from=0x0000000000000000000000000000000000000000 _to=0xa44a08d3f6933c69212114bb66e2df1813651844 _value=980000
 undefined
 > 
 RESULT: 

@@ -10,8 +10,9 @@ This audit has been conducted on indaHash's source code in commits
 [f787eba](https://github.com/indahash/indaHashToken/commit/f787eba86b9f6d0f51aa4d9601e55a3010cfd5a6),
 [6183f2b](https://github.com/indahash/indaHashToken/commit/6183f2b02977703fd5bb06a2f28e47b406d6fe21),
 [f04260e](https://github.com/indahash/indaHashToken/commit/f04260efe809d55aca72d8441c10ed634e49c5a1),
-[b2d1e02](https://github.com/indahash/indaHashToken/commit/b2d1e026b3f742ae7bf420a24851eea69fd942d4) and
-[1a6ebea](https://github.com/indahash/indaHashToken/commit/1a6ebeaef6605d1a77368b821392e8e7422952bb).
+[b2d1e02](https://github.com/indahash/indaHashToken/commit/b2d1e026b3f742ae7bf420a24851eea69fd942d4),
+[1a6ebea](https://github.com/indahash/indaHashToken/commit/1a6ebeaef6605d1a77368b821392e8e7422952bb) and
+[55d4922](https://github.com/indahash/indaHashToken/commit/55d49227376138076f07d1187565677ebc723e50).
 
 No potential vulnerabilities have been identified in the crowdsale and token contract.
 
@@ -19,21 +20,22 @@ No potential vulnerabilities have been identified in the crowdsale and token con
 
 ### Crowdsale Mainnet Addresses
 
-The crowdsale contract has been deployed to [0x4895d0fcb5489434fd856f2942d578ea0c1aed15](https://etherscan.io/address/0x4895d0fcb5489434fd856f2942d578ea0c1aed15#code).
+The crowdsale contract has been deployed to [0x5136C98A80811C3f46bDda8B5c4555CFd9f812F0](https://etherscan.io/address/0x5136C98A80811C3f46bDda8B5c4555CFd9f812F0#code).
 
 The script [scripts/getDeploymentParameters.sh](scripts/getDeploymentParameters.sh) was used to extract the following parameters from the deployed
 contract:
 
-    tokenContractAddress=0x4895d0FCb5489434fD856f2942D578EA0C1aED15
-    token.owner=0xde330092a940d62e2651579217967b6d1d580ee6
-    token.newOwner=0xde330092a940d62e2651579217967b6d1d580ee6
+    $ ./getDeploymentParameters.sh 
+    tokenContractAddress=0x5136c98a80811c3f46bdda8b5c4555cfd9f812f0
+    token.owner=0x0aeb979b25b3aba2b36ea33cfce5bca7fd401241
+    token.newOwner=0x0aeb979b25b3aba2b36ea33cfce5bca7fd401241
     token.name=indaHash Coin
     token.symbol=IDH
     token.decimals=6
     token.totalSupply=0
-    token.wallet=0x28e7c414dfa6d3dbe3a53aa2add3aca48707a031
+    token.wallet=0x60edbfa1aa26dc07da5fb44f6f2a06e2c74dad41
     token.adminWallet=0xde53123a9798f23e69668cc4ce1e8497a8419e52
-    token.DATE_PRESALE_START=1510151400 Wed, 08 Nov 2017 14:30:00 UTC
+    token.DATE_PRESALE_START=1510153200 Wed, 08 Nov 2017 15:00:00 UTC
     token.DATE_PRESALE_END=1510758000 Wed, 15 Nov 2017 15:00:00 UTC
     token.DATE_ICO_START=1511967600 Wed, 29 Nov 2017 15:00:00 UTC
     token.DATE_ICO_END=1513782000 Wed, 20 Dec 2017 15:00:00 UTC
@@ -46,7 +48,7 @@ contract:
     token.TOKEN_SUPPLY_MKT=80000000
     token.PRESALE_ETH_CAP=15000
     token.MIN_FUNDING_GOAL=40000000
-    token.MIN_CONTRIBUTION=0.05
+    token.MIN_CONTRIBUTION=0.5
     token.MAX_CONTRIBUTION=300
     token.COOLDOWN_PERIOD=172800
     token.CLAWBACK_PERIOD=7776000
@@ -57,28 +59,16 @@ contract:
     token.tokensClaimedAirdrop=0
     token.icoThresholdReached=false
     token.isTransferable=false
-    OwnershipTransferred 0 #4481791 {"_from":"0xde53123a9798f23e69668cc4ce1e8497a8419e52","_to":"0xde330092a940d62e2651579217967b6d1d580ee6"}
-    WalletUpdated 0 #4481821 {"_newWallet":"0x28e7c414dfa6d3dbe3a53aa2add3aca48707a031"}
+    OwnershipTransferProposed 0 #4513513 {"_from":"0xde53123a9798f23e69668cc4ce1e8497a8419e52","_to":"0x0aeb979b25b3aba2b36ea33cfce5bca7fd401241"}
+    OwnershipTransferred 0 #4513534 {"_from":"0xde53123a9798f23e69668cc4ce1e8497a8419e52","_to":"0x0aeb979b25b3aba2b36ea33cfce5bca7fd401241"}
+    WalletUpdated 0 #4513517 {"_newWallet":"0x60edbfa1aa26dc07da5fb44f6f2a06e2c74dad41"}
 
-A copy of the verified source code from the deployed contract has been saved to [deployed-contract/IndaHashToken_deployed_at_0x4895d0FCb5489434fD856f2942D578EA0C1aED15.sol](deployed-contract/IndaHashToken_deployed_at_0x4895d0FCb5489434fD856f2942D578EA0C1aED15.sol).
+A copy of the verified source code from the deployed contract has been saved to [deployed-contract/IndaHashToken_deployed_at_0x5136c98a80811c3f46bdda8b5c4555cfd9f812f0.sol](deployed-contract/IndaHashToken_deployed_at_0x5136c98a80811c3f46bdda8b5c4555cfd9f812f0.sol).
 
-The differences between the deployed contract and the audited contract source code are:
+There were no differences between the deployed contract and the audited contract source code:
 
-    $ diff -w IndaHashToken_deployed_at_0x4895d0FCb5489434fD856f2942D578EA0C1aED15.sol ../../contracts/indaHashToken.sol 
-    222c222
-    <   uint public constant DATE_PRESALE_START = 1510151400; // 08-Nov-2017 14:30 UTC
-    ---
-    >   uint public constant DATE_PRESALE_START = 1510153200; // 08-Nov-2017 15:00 UTC
-    242c242
-    <   uint public constant PRESALE_ETH_CAP =  15000 ether;
-    ---
-    >   uint public constant PRESALE_ETH_CAP =  10000 ether;
-
-* The wallet address [0x28e7c414dfa6d3dbe3a53aa2add3aca48707a031](https://etherscan.io/address/0x28e7c414dfa6d3dbe3a53aa2add3aca48707a031) has not
-  had any transactions. It would be prudent to test this address by transferring some ETH into, and then moving the ETH back out.
-
-* The crowdsale/token contract has been deployed using unoptimised compilation to bytecode. The gas cost for executing functions may be slightly
-  higher for unoptimised code compared to optimised code.
+    $ diff -w IndaHashToken_deployed_at_0x5136c98a80811c3f46bdda8b5c4555cfd9f812f0.sol ../../contracts/indaHashToken.sol 
+    $ 
 
 <br />
 
@@ -299,4 +289,4 @@ in [test/test5results.txt](test/test5results.txt) and the detailed output saved 
 
 <br />
 
-(c) BokkyPooBah / Bok Consulting Pty Ltd for indaHash - Nov 6 2017. The MIT Licence.
+(c) BokkyPooBah / Bok Consulting Pty Ltd for indaHash - Nov 8 2017. The MIT Licence.

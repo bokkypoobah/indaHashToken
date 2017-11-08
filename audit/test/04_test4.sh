@@ -61,7 +61,7 @@ printf "DATE_ICO_END       = '$DATE_ICO_END' '$DATE_ICO_END_S'\n" | tee -a $TEST
 `perl -pi -e "s/DATE_ICO_START \+ 7 days/DATE_ICO_START \+ 30 seconds/" $CROWDSALESOL`
 `perl -pi -e "s/DATE_ICO_START \+ 14 days/DATE_ICO_START \+ 60 seconds/" $CROWDSALESOL`
 `perl -pi -e "s/COOLDOWN_PERIOD \=  2 days/COOLDOWN_PERIOD \=  30 seconds/" $CROWDSALESOL`
-`perl -pi -e "s/PRESALE_ETH_CAP \=  10000 ether/PRESALE_ETH_CAP \=  200 ether/" $CROWDSALESOL`
+`perl -pi -e "s/PRESALE_ETH_CAP \=  15000 ether/PRESALE_ETH_CAP \=  200 ether/" $CROWDSALESOL`
 #`perl -pi -e "s/MAX_CONTRIBUTION \= 300 ether/MAX_CONTRIBUTION \= 500000 ether/" $CROWDSALESOL`
 
 DIFFS1=`diff $SOURCEDIR/$CROWDSALESOL $CROWDSALESOL`

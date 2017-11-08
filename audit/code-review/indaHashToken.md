@@ -172,7 +172,9 @@ contract ERC20Token is ERC20Interface, Owned {
 
   /* Total token supply */
 
+  // BK Ok
   function totalSupply() constant returns (uint) {
+    // BK Ok
     return tokensIssuedTotal;
   }
 
@@ -318,6 +320,7 @@ contract IndaHashToken is ERC20Token {
   uint public constant TOKEN_SUPPLY_ICO   = 320 * E6 * E6; // 320 mm tokens
   uint public constant TOKEN_SUPPLY_MKT   =  80 * E6 * E6; //  80 mm tokens
 
+  // BK Ok
   uint public constant PRESALE_ETH_CAP =  15000 ether;
 
   // BK Ok
@@ -429,16 +432,25 @@ contract IndaHashToken is ERC20Token {
 
   /* Manage locked */
 
+  // BK Ok - Can only be executed by adminWallet or owner
   function removeLock(address _participant) {
+    // BK Ok
     require( msg.sender == adminWallet || msg.sender == owner );
+    // BK Ok
     locked[_participant] = false;
+    // BK Ok - Log event
     LockRemoved(_participant);
   }
 
+  // BK Ok - Can only be executed by adminWallet or owner
   function removeLockMultiple(address[] _participants) {
+    // BK Ok
     require( msg.sender == adminWallet || msg.sender == owner );
+    // BK Ok
     for (uint i = 0; i < _participants.length; i++) {
+      // BK Ok
       locked[_participants[i]] = false;
+      // BK Ok - Log event
       LockRemoved(_participants[i]);
     }
   }
@@ -496,6 +508,7 @@ contract IndaHashToken is ERC20Token {
     tokensIssuedTotal      = tokensIssuedTotal.add(_tokens);
     
     // locked
+    // BK Ok
     locked[_participant] = true;
     
     // log the miniting
@@ -543,6 +556,7 @@ contract IndaHashToken is ERC20Token {
     require( msg.value >= MIN_CONTRIBUTION );
 
     // one address transfer hard cap
+    // BK Ok
     require( icoEtherContributed[msg.sender].add(msg.value) <= MAX_CONTRIBUTION );
 
     // check dates for presale or ICO
@@ -554,6 +568,7 @@ contract IndaHashToken is ERC20Token {
     require( isPresale || isIco );
 
     // presale cap in Ether
+    // BK Ok
     if (isPresale) require( icoEtherReceived.add(msg.value) <= PRESALE_ETH_CAP );
     
     // get baseline number of tokens
@@ -594,6 +609,7 @@ contract IndaHashToken is ERC20Token {
     icoEtherContributed[msg.sender] = icoEtherContributed[msg.sender].add(msg.value);
     
     // locked
+    // BK Ok
     locked[msg.sender] = true;
     
     // log token issuance
@@ -612,6 +628,7 @@ contract IndaHashToken is ERC20Token {
 
   // BK Ok
   function transfer(address _to, uint _amount) returns (bool success) {
+    // BK Next 3 Ok
     require( isTransferable() );
     require( locked[msg.sender] == false );
     require( locked[_to] == false );
@@ -623,6 +640,7 @@ contract IndaHashToken is ERC20Token {
 
   // BK Ok
   function transferFrom(address _from, address _to, uint _amount) returns (bool success) {
+    // BK Next 3 Ok
     require( isTransferable() );
     require( locked[_from] == false );
     require( locked[_to] == false );
@@ -759,7 +777,9 @@ contract IndaHashToken is ERC20Token {
 
   // BK Ok - Anyone can call this
   function transferMultiple(address[] _addresses, uint[] _amounts) external {
+    // BK Ok
     require( isTransferable() );
+    // BK Ok
     require( locked[msg.sender] == false );
     // BK Ok
     require( _addresses.length == _amounts.length );

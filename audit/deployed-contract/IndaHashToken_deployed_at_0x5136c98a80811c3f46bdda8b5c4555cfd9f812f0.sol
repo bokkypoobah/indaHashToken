@@ -219,7 +219,7 @@ contract IndaHashToken is ERC20Token {
 
   /* ICO dates */
 
-  uint public constant DATE_PRESALE_START = 1510151400; // 08-Nov-2017 14:30 UTC
+  uint public constant DATE_PRESALE_START = 1510153200; // 08-Nov-2017 15:00 UTC
   uint public constant DATE_PRESALE_END   = 1510758000; // 15-Nov-2017 15:00 UTC
 
   uint public constant DATE_ICO_START = 1511967600; // 29-Nov-2017 15:00 UTC
@@ -243,7 +243,7 @@ contract IndaHashToken is ERC20Token {
 
   uint public constant MIN_FUNDING_GOAL =  40 * E6 * E6; // 40 mm tokens
   
-  uint public constant MIN_CONTRIBUTION = 1 ether / 20; // 0.05 Ether
+  uint public constant MIN_CONTRIBUTION = 1 ether / 2; // 0.5 Ether
   uint public constant MAX_CONTRIBUTION = 300 ether;
 
   uint public constant COOLDOWN_PERIOD =  2 days;
@@ -265,10 +265,12 @@ contract IndaHashToken is ERC20Token {
 
   /* Keep track of participants who 
   /* - have received their airdropped tokens after a successful ICO */
-  /* - or have reclaimed their contributions in case of fialed Crowdsale */
+  /* - or have reclaimed their contributions in case of failed Crowdsale */
+  /* - are locked */
   
   mapping(address => bool) public airdropClaimed;
   mapping(address => bool) public refundClaimed;
+  mapping(address => bool) public locked;
 
   // Events ---------------------------
   
@@ -279,6 +281,7 @@ contract IndaHashToken is ERC20Token {
   event TokensIssued(address indexed _owner, uint _tokens, uint _balance, uint _etherContributed);
   event Refund(address indexed _owner, uint _amount, uint _tokens);
   event Airdrop(address indexed _owner, uint _amount, uint _balance);
+  event LockRemoved(address indexed _participant);
 
   // Basic Functions ------------------
 
@@ -319,6 +322,24 @@ contract IndaHashToken is ERC20Token {
      return true;
   }
   
+  // Lock functions -------------------
+
+  /* Manage locked */
+
+  function removeLock(address _participant) {
+    require( msg.sender == adminWallet || msg.sender == owner );
+    locked[_participant] = false;
+    LockRemoved(_participant);
+  }
+
+  function removeLockMultiple(address[] _participants) {
+    require( msg.sender == adminWallet || msg.sender == owner );
+    for (uint i = 0; i < _participants.length; i++) {
+      locked[_participants[i]] = false;
+      LockRemoved(_participants[i]);
+    }
+  }
+
   // Owner Functions ------------------
   
   /* Change the crowdsale wallet address */
@@ -355,6 +376,9 @@ contract IndaHashToken is ERC20Token {
     balances[_participant] = balances[_participant].add(_tokens);
     tokensIssuedMkt        = tokensIssuedMkt.add(_tokens);
     tokensIssuedTotal      = tokensIssuedTotal.add(_tokens);
+    
+    // locked
+    locked[_participant] = true;
     
     // log the miniting
     Transfer(0x0, _participant, _tokens);
@@ -426,6 +450,9 @@ contract IndaHashToken is ERC20Token {
     icoEtherReceived                = icoEtherReceived.add(msg.value);
     icoEtherContributed[msg.sender] = icoEtherContributed[msg.sender].add(msg.value);
     
+    // locked
+    locked[msg.sender] = true;
+    
     // log token issuance
     Transfer(0x0, msg.sender, tokens);
     TokensIssued(msg.sender, tokens, balances[msg.sender], msg.value);
@@ -440,6 +467,8 @@ contract IndaHashToken is ERC20Token {
 
   function transfer(address _to, uint _amount) returns (bool success) {
     require( isTransferable() );
+    require( locked[msg.sender] == false );
+    require( locked[_to] == false );
     return super.transfer(_to, _amount);
   }
   
@@ -447,6 +476,8 @@ contract IndaHashToken is ERC20Token {
 
   function transferFrom(address _from, address _to, uint _amount) returns (bool success) {
     require( isTransferable() );
+    require( locked[_from] == false );
+    require( locked[_to] == false );
     return super.transferFrom(_from, _to, _amount);
   }
 
@@ -549,8 +580,11 @@ contract IndaHashToken is ERC20Token {
 
   function transferMultiple(address[] _addresses, uint[] _amounts) external {
     require( isTransferable() );
+    require( locked[msg.sender] == false );
     require( _addresses.length == _amounts.length );
-    for (uint i = 0; i < _addresses.length; i++) super.transfer(_addresses[i], _amounts[i]);
+    for (uint i = 0; i < _addresses.length; i++) {
+      if (locked[_addresses[i]] == false) super.transfer(_addresses[i], _amounts[i]);
+    }
   }  
 
 }

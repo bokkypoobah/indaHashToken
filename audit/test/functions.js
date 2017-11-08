@@ -340,6 +340,13 @@ function printTokenContractDetails() {
     });
     airdropEvents.stopWatching();
 
+    var lockRemovedEvents = contract.LockRemoved({}, { fromBlock: tokenFromBlock, toBlock: latestBlock });
+    i = 0;
+    lockRemovedEvents.watch(function (error, result) {
+      console.log("RESULT: LockRemoved " + i++ + " #" + result.blockNumber + " " + JSON.stringify(result.args));
+    });
+    lockRemovedEvents.stopWatching();
+
     var approvalEvents = contract.Approval({}, { fromBlock: tokenFromBlock, toBlock: latestBlock });
     i = 0;
     approvalEvents.watch(function (error, result) {
