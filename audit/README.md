@@ -2,7 +2,7 @@
 
 ## Summary
 
-[indaHash](https://indahash.com/) intends to run a [crowdsale](https://indahash.com/ico) commencing on Nov 2017.
+[indaHash](https://indahash.com/) intends to run a [crowdsale](https://indahash.com/ico) commencing in Nov 2017.
 
 Bok Consulting Pty Ltd was commissioned to perform an audit on the indaHash's crowdsale and token Ethereum smart contract.
 

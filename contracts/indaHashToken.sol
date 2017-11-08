@@ -258,23 +258,20 @@ contract IndaHashToken is ERC20Token {
   
   uint public tokensClaimedAirdrop = 0;
   
-  /* Keep track of Ether contributed and tokens received during Crowdsale, */
-  /* minting and airdrop (these tokens are initially locked) */
+  /* Keep track of Ether contributed and tokens received during Crowdsale */
   
   mapping(address => uint) public icoEtherContributed;
   mapping(address => uint) public icoTokensReceived;
-  mapping(address => uint) public mktTokensReceived;
-  mapping(address => uint) public airTokensReceived;
-  
+
   /* Keep track of participants who 
   /* - have received their airdropped tokens after a successful ICO */
   /* - or have reclaimed their contributions in case of failed Crowdsale */
-  /* - have passed KYC */
+  /* - are locked */
   
   mapping(address => bool) public airdropClaimed;
   mapping(address => bool) public refundClaimed;
-  mapping(address => bool) public whitelist;
-  
+  mapping(address => bool) public locked;
+
   // Events ---------------------------
   
   event WalletUpdated(address _newWallet);
@@ -284,7 +281,7 @@ contract IndaHashToken is ERC20Token {
   event TokensIssued(address indexed _owner, uint _tokens, uint _balance, uint _etherContributed);
   event Refund(address indexed _owner, uint _amount, uint _tokens);
   event Airdrop(address indexed _owner, uint _amount, uint _balance);
-  event WhitelistUpdated(address indexed _participant, bool _status);
+  event LockRemoved(address indexed _participant);
 
   // Basic Functions ------------------
 
@@ -324,22 +321,22 @@ contract IndaHashToken is ERC20Token {
      if ( atNow() < DATE_ICO_END + COOLDOWN_PERIOD ) return false;
      return true;
   }
+  
+  // Lock functions -------------------
 
-  // Whitelist functions ------
+  /* Manage locked */
 
-  /* Manage whitelist */
-
-  function addToWhitelist(address _participant) {
+  function removeLock(address _participant) {
     require( msg.sender == adminWallet || msg.sender == owner );
-    whitelist[_participant] = true;
-    WhitelistUpdated(_participant, true);
+    locked[_participant] = false;
+    LockRemoved(_participant);
   }
 
-  function addToWhitelistMultiple(address[] _participants) {
+  function removeLockMultiple(address[] _participants) {
     require( msg.sender == adminWallet || msg.sender == owner );
     for (uint i = 0; i < _participants.length; i++) {
-      whitelist[_participants[i]] = true;
-      WhitelistUpdated(_participants[i], true);      
+      locked[_participants[i]] = false;
+      LockRemoved(_participants[i]);
     }
   }
 
@@ -379,7 +376,9 @@ contract IndaHashToken is ERC20Token {
     balances[_participant] = balances[_participant].add(_tokens);
     tokensIssuedMkt        = tokensIssuedMkt.add(_tokens);
     tokensIssuedTotal      = tokensIssuedTotal.add(_tokens);
-    mktTokensReceived[_participant] = mktTokensReceived[_participant].add(_tokens);
+    
+    // locked
+    locked[_participant] = true;
     
     // log the miniting
     Transfer(0x0, _participant, _tokens);
@@ -451,6 +450,9 @@ contract IndaHashToken is ERC20Token {
     icoEtherReceived                = icoEtherReceived.add(msg.value);
     icoEtherContributed[msg.sender] = icoEtherContributed[msg.sender].add(msg.value);
     
+    // locked
+    locked[msg.sender] = true;
+    
     // log token issuance
     Transfer(0x0, msg.sender, tokens);
     TokensIssued(msg.sender, tokens, balances[msg.sender], msg.value);
@@ -464,32 +466,19 @@ contract IndaHashToken is ERC20Token {
   /* Override "transfer" (ERC20) */
 
   function transfer(address _to, uint _amount) returns (bool success) {
-    require( transferCheck(msg.sender, _amount) );
+    require( isTransferable() );
+    require( locked[msg.sender] == false );
+    require( locked[_to] == false );
     return super.transfer(_to, _amount);
   }
   
   /* Override "transferFrom" (ERC20) */
 
   function transferFrom(address _from, address _to, uint _amount) returns (bool success) {
-    require( transferCheck(_from, _amount) );
+    require( isTransferable() );
+    require( locked[_from] == false );
+    require( locked[_to] == false );
     return super.transferFrom(_from, _to, _amount);
-  }
-  
-  /* Helper function to check if a transfer is possible */
-
-  function transferCheck(address _from, uint _amount) public constant returns (bool success) {
-    // no transfers possible if not transferable
-    if(!isTransferable()) return false;
-    
-    // whitelisted - ok
-    if (whitelist[_from]) return true;
-    
-    // transferable but not whitelisted: only unlocked tokens can be transferred
-    uint lockedBalance = icoTokensReceived[_from];
-    lockedBalance = lockedBalance.add(mktTokensReceived[_from]);
-    lockedBalance = lockedBalance.add(airTokensReceived[_from]);
-    if (balances[_from].sub(_amount) >= lockedBalance) return true;
-    return false;
   }
 
   // External functions ---------------
@@ -558,7 +547,6 @@ contract IndaHashToken is ERC20Token {
     balances[_participant] = balances[_participant].add(airdrop);
     tokensIssuedTotal      = tokensIssuedTotal.add(airdrop);
     tokensClaimedAirdrop   = tokensClaimedAirdrop.add(airdrop);
-    airTokensReceived[_participant] = airdrop;
     
     // log
     Airdrop(_participant, airdrop, balances[_participant]);
@@ -570,7 +558,7 @@ contract IndaHashToken is ERC20Token {
   
   /* If an account has tokens from the ico, the amount after the airdrop */
   /* will be newBalance = tokens * TOKEN_SUPPLY_ICO / tokensIssuedIco */
-
+      
   function computeAirdrop(address _participant) constant returns (uint airdrop) {
     // return 0 if it's too early or ico was not successful
     if ( atNow() < DATE_ICO_END || !icoThresholdReached() ) return 0;
@@ -591,10 +579,11 @@ contract IndaHashToken is ERC20Token {
   /* (longer _amounts array not accepted = sanity check) */
 
   function transferMultiple(address[] _addresses, uint[] _amounts) external {
+    require( isTransferable() );
+    require( locked[msg.sender] == false );
     require( _addresses.length == _amounts.length );
     for (uint i = 0; i < _addresses.length; i++) {
-      require( transferCheck(msg.sender, _amounts[i]) );
-      super.transfer(_addresses[i], _amounts[i]);
+      if (locked[_addresses[i]] == false) super.transfer(_addresses[i], _amounts[i]);
     }
   }  
 
