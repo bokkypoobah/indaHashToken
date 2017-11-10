@@ -70,6 +70,12 @@ There were no differences between the deployed contract and the audited contract
     $ diff -w IndaHashToken_deployed_at_0x5136c98a80811c3f46bdda8b5c4555cfd9f812f0.sol ../../contracts/indaHashToken.sol 
     $ 
 
+Update Nov 10 2017 - The minimum funding goal has been reached and the contributed ETH is now flowing directly into the crowdsale wallet at
+[0x60edbfa1aa26dc07da5fb44f6f2a06e2c74dad41](https://etherscan.io/address/0x60edbfa1aa26dc07da5fb44f6f2a06e2c74dad41#internaltx).
+
+Token contract explorer - [EtherScan.io](https://etherscan.io/token/0x5136C98A80811C3f46bDda8B5c4555CFd9f812F0) or
+[Ethplorer.io](https://ethplorer.io/address/0x5136c98a80811c3f46bdda8b5c4555cfd9f812f0).
+
 <br />
 
 <br />
@@ -289,4 +295,4 @@ in [test/test5results.txt](test/test5results.txt) and the detailed output saved 
 
 <br />
 
-(c) BokkyPooBah / Bok Consulting Pty Ltd for indaHash - Nov 8 2017. The MIT Licence.
+(c) BokkyPooBah / Bok Consulting Pty Ltd for indaHash - Nov 10 2017. The MIT Licence.
